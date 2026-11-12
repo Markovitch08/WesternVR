@@ -55,8 +55,12 @@ func test_held_gun_cannot_pass_through_the_bench() -> void:
 	gun.try_grab(hand)
 	# Push the hand 30 cm down into and through the bench.
 	hand.global_position += Vector3(0, -0.3, 0)
-	await wait_physics_frames(90)
-	assert_gt(World.lowest_point(gun), 0.9 - 0.01, "gun stays on top of the bench")
+	var lowest := INF
+	for i in 90:
+		await wait_physics_frames(1)
+		lowest = minf(lowest, World.lowest_point(gun))
+	assert_gt(lowest, 0.9 - 0.01, "gun stays on top of the bench in every frame")
+	assert_lt(gun.global_position.y, 1.0, "and is pressed down onto it")
 
 
 func test_released_gun_falls_and_rests_on_the_table() -> void:

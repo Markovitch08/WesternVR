@@ -21,6 +21,11 @@ signal impacted(surface: StringName, speed: float, at: Vector3)
 @export var linear_stiffness := 45.0
 ## How quickly rotation error is closed (1/s).
 @export var angular_stiffness := 45.0
+## Position error (m) beyond which the object counts as obstructed (e.g. the hand
+## went through a table) and the hold backs off so it doesn't grind into it.
+@export var obstruction_distance := 0.05
+## Lowest fraction of hold strength used while obstructed.
+@export_range(0.05, 1.0) var obstructed_strength := 0.2
 ## Grab by the grip point if the hand is within this distance of it (m).
 @export var snap_grab_distance := 0.12
 ## Collision layer while held (layer 17 "Held Objects": hands ignore it).
@@ -158,16 +163,20 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	# Linear: drive the centre of mass toward where it should be.
 	var com_local := state.center_of_mass_local
 	var com_err := target * com_local - xf * com_local
+	# Obstructed: the hand is far from where the object can get to. Push gently
+	# instead of grinding it into whatever is in the way.
+	var reach := clampf(obstruction_distance / maxf(com_err.length(), 1e-4), obstructed_strength, 1.0)
+	var strength := _strength * reach
 	var desired_v := target_vel + com_err * linear_stiffness
 	var force := (desired_v - state.linear_velocity) * mass / dt - state.total_gravity * mass
-	force = force.limit_length(max_hold_force * _strength)
+	force = force.limit_length(max_hold_force * strength)
 	state.apply_central_force(force)
 
 	# Angular: same idea with the inertia tensor.
 	var desired_w := target_ang + _rotation_vector(xf.basis, target.basis) * angular_stiffness
 	var inertia := state.inverse_inertia_tensor.inverse()
 	var torque := inertia * ((desired_w - state.angular_velocity) / dt)
-	torque = torque.limit_length(max_hold_torque * _strength)
+	torque = torque.limit_length(max_hold_torque * strength)
 	state.apply_torque(torque)
 
 
