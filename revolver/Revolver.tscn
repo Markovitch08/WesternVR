@@ -29,7 +29,7 @@ size = Vector3(0.016, 0.032, 0.046)
 [sub_resource type="BoxShape3D" id="BoxShape3D_whd06"]
 size = Vector3(0.032, 0.11, 0.036)
 
-[node name="Revolver" type="RigidBody3D" unique_id=2071169515]
+[node name="Revolver" type="RigidBody3D" unique_id=1639914665]
 collision_layer = 4
 collision_mask = 524295
 mass = 1.05
@@ -40,37 +40,37 @@ continuous_cd = true
 script = ExtResource("1_uocf7")
 impact_sound_prefix = "gun_land_"
 
-[node name="Model" parent="." unique_id=2114853888 instance=ExtResource("2_ppvu5")]
+[node name="Model" parent="." unique_id=1951011644 instance=ExtResource("2_ppvu5")]
 
-[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=348448695]
+[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=153384165]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
 shape = SubResource("CylinderShape3D_0ebd8")
 
-[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=1978923080]
+[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=256565701]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.0715)
 shape = SubResource("BoxShape3D_ocb3w")
 
-[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=400071720]
+[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=1984510462]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
 shape = SubResource("CylinderShape3D_218qi")
 
-[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=1116061090]
+[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=1947893154]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
 shape = SubResource("BoxShape3D_ljas5")
 
-[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=1039729533]
+[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=90180801]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
 shape = SubResource("BoxShape3D_26a7h")
 
-[node name="GripShape" type="CollisionShape3D" parent="." unique_id=464854070]
+[node name="GripShape" type="CollisionShape3D" parent="." unique_id=1613774686]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
 shape = SubResource("BoxShape3D_whd06")
 
-[node name="GripPoint" type="Marker3D" parent="." unique_id=74200422]
+[node name="GripPoint" type="Marker3D" parent="." unique_id=2079023293]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, -0.06897114, 0.0965)
 
-[node name="Audio" type="Node" parent="." unique_id=1073813800]
+[node name="Audio" type="Node" parent="." unique_id=847659682]
 script = ExtResource("3_17e15")
 
-[node name="MuzzleEffects" type="Node3D" parent="." unique_id=623886415]
+[node name="MuzzleEffects" type="Node3D" parent="." unique_id=864256069]
 script = ExtResource("4_m3prt")
