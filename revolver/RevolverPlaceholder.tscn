@@ -182,143 +182,143 @@ size = Vector3(0.032, 0.11, 0.034)
 material = SubResource("StandardMaterial3D_70puh")
 size = Vector3(0.0025, 0.010140868, 0.012)
 
-[node name="RevolverModel" type="Node3D" unique_id=538929824]
+[node name="RevolverModel" type="Node3D" unique_id=1413209909]
 
-[node name="Frame" type="Node3D" parent="." unique_id=1194932740]
+[node name="Frame" type="Node3D" parent="." unique_id=1851332461]
 
-[node name="TopStrap" type="MeshInstance3D" parent="Frame" unique_id=918907979]
+[node name="TopStrap" type="MeshInstance3D" parent="Frame" unique_id=896889688]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0145, 0.027)
 mesh = SubResource("BoxMesh_4nvc5")
 
-[node name="FrameFront" type="MeshInstance3D" parent="Frame" unique_id=1041803629]
+[node name="FrameFront" type="MeshInstance3D" parent="Frame" unique_id=616990768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.011, -0.006)
 mesh = SubResource("BoxMesh_hccvm")
 
-[node name="FrameBottom" type="MeshInstance3D" parent="Frame" unique_id=321043465]
+[node name="FrameBottom" type="MeshInstance3D" parent="Frame" unique_id=746866709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.039, 0.022)
 mesh = SubResource("BoxMesh_257xv")
 
-[node name="RecoilShieldLeft" type="MeshInstance3D" parent="Frame" unique_id=693234020]
+[node name="RecoilShieldLeft" type="MeshInstance3D" parent="Frame" unique_id=1940917009]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00725, -0.012, 0.0485)
 mesh = SubResource("BoxMesh_w6etw")
 
-[node name="RecoilShieldRightTop" type="MeshInstance3D" parent="Frame" unique_id=67817036]
+[node name="RecoilShieldRightTop" type="MeshInstance3D" parent="Frame" unique_id=136632411]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01475, 0.0045, 0.0485)
 mesh = SubResource("BoxMesh_a6g8a")
 
-[node name="RecoilShieldRightLow" type="MeshInstance3D" parent="Frame" unique_id=298858382]
+[node name="RecoilShieldRightLow" type="MeshInstance3D" parent="Frame" unique_id=1753122120]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01475, -0.03, 0.0485)
 mesh = SubResource("BoxMesh_fokau")
 
-[node name="Backstrap" type="MeshInstance3D" parent="Frame" unique_id=304864163]
+[node name="Backstrap" type="MeshInstance3D" parent="Frame" unique_id=1049352508]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016, 0.066)
 mesh = SubResource("BoxMesh_n6g4k")
 
-[node name="CylinderPin" type="MeshInstance3D" parent="Frame" unique_id=2138825578]
+[node name="CylinderPin" type="MeshInstance3D" parent="Frame" unique_id=1793080536]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, -0.006)
 mesh = SubResource("CylinderMesh_vb4qc")
 
-[node name="TriggerGuard" type="MeshInstance3D" parent="Frame" unique_id=711691307]
+[node name="TriggerGuard" type="MeshInstance3D" parent="Frame" unique_id=851320573]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, -0.052, 0.04)
 mesh = SubResource("TorusMesh_0kbn8")
 
-[node name="Barrel" type="Node3D" parent="." unique_id=907604502]
+[node name="Barrel" type="Node3D" parent="." unique_id=819993886]
 
-[node name="Tube" type="MeshInstance3D" parent="Barrel" unique_id=983671244]
+[node name="Tube" type="MeshInstance3D" parent="Barrel" unique_id=1004353021]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
 mesh = SubResource("CylinderMesh_nspon")
 
-[node name="Bore" type="MeshInstance3D" parent="Barrel" unique_id=1278601980]
+[node name="Bore" type="MeshInstance3D" parent="Barrel" unique_id=1759331538]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.191)
 mesh = SubResource("CylinderMesh_hj2x2")
 
-[node name="EjectorHousing" type="MeshInstance3D" parent="Barrel" unique_id=1282835523]
+[node name="EjectorHousing" type="MeshInstance3D" parent="Barrel" unique_id=643407540]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.0135, -0.0135, -0.0715)
 mesh = SubResource("CylinderMesh_1teb8")
 
-[node name="Cylinder" type="Node3D" parent="." unique_id=747729290]
+[node name="Cylinder" type="Node3D" parent="." unique_id=1011769506]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0135, 0.0203)
 
-[node name="Body" type="MeshInstance3D" parent="Cylinder" unique_id=2041268450]
+[node name="Body" type="MeshInstance3D" parent="Cylinder" unique_id=593447345]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_amjdq")
 
-[node name="Flute0" type="MeshInstance3D" parent="Cylinder" unique_id=951999625]
+[node name="Flute0" type="MeshInstance3D" parent="Cylinder" unique_id=1284997709]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.0135, 0)
 mesh = SubResource("CylinderMesh_dyk4b")
 
-[node name="Flute1" type="MeshInstance3D" parent="Cylinder" unique_id=2126812093]
+[node name="Flute1" type="MeshInstance3D" parent="Cylinder" unique_id=2100192914]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.011691343, 0.00675, 0)
 mesh = SubResource("CylinderMesh_nhcnv")
 
-[node name="Flute2" type="MeshInstance3D" parent="Cylinder" unique_id=352233980]
+[node name="Flute2" type="MeshInstance3D" parent="Cylinder" unique_id=952463566]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.011691343, -0.00675, 0)
 mesh = SubResource("CylinderMesh_u7yhq")
 
-[node name="Flute3" type="MeshInstance3D" parent="Cylinder" unique_id=2082237648]
+[node name="Flute3" type="MeshInstance3D" parent="Cylinder" unique_id=874250015]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.6532733e-18, -0.0135, 0)
 mesh = SubResource("CylinderMesh_jm42c")
 
-[node name="Flute4" type="MeshInstance3D" parent="Cylinder" unique_id=563222130]
+[node name="Flute4" type="MeshInstance3D" parent="Cylinder" unique_id=51156817]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.011691343, -0.00675, 0)
 mesh = SubResource("CylinderMesh_2exxc")
 
-[node name="Flute5" type="MeshInstance3D" parent="Cylinder" unique_id=380466552]
+[node name="Flute5" type="MeshInstance3D" parent="Cylinder" unique_id=867154071]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.011691343, 0.00675, 0)
 mesh = SubResource("CylinderMesh_pg6a3")
 
-[node name="Hammer" type="Node3D" parent="." unique_id=2024466518]
+[node name="Hammer" type="Node3D" parent="." unique_id=998332209]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.064)
 
-[node name="Body" type="MeshInstance3D" parent="Hammer" unique_id=1420324715]
+[node name="Body" type="MeshInstance3D" parent="Hammer" unique_id=696639195]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
 mesh = SubResource("BoxMesh_syv15")
 
-[node name="Spur" type="MeshInstance3D" parent="Hammer" unique_id=1457204869]
+[node name="Spur" type="MeshInstance3D" parent="Hammer" unique_id=1791269622]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.031, 0.01)
 mesh = SubResource("BoxMesh_ip7si")
 
-[node name="Trigger" type="Node3D" parent="." unique_id=2069454794]
+[node name="Trigger" type="Node3D" parent="." unique_id=1789612937]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.036, 0.04)
 
-[node name="Blade" type="MeshInstance3D" parent="Trigger" unique_id=1028012319]
+[node name="Blade" type="MeshInstance3D" parent="Trigger" unique_id=730619733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.001)
 mesh = SubResource("BoxMesh_kpmrd")
 
-[node name="LoadingGate" type="Node3D" parent="." unique_id=96440597]
+[node name="LoadingGate" type="Node3D" parent="." unique_id=611403595]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0215, 0.048)
 
-[node name="Plate" type="MeshInstance3D" parent="LoadingGate" unique_id=1277873438]
+[node name="Plate" type="MeshInstance3D" parent="LoadingGate" unique_id=1255432196]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008, 0)
 mesh = SubResource("BoxMesh_mhvfc")
 
-[node name="EjectorRod" type="Node3D" parent="." unique_id=526270984]
+[node name="EjectorRod" type="Node3D" parent="." unique_id=774983891]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.012)
 
-[node name="Rod" type="MeshInstance3D" parent="EjectorRod" unique_id=624651305]
+[node name="Rod" type="MeshInstance3D" parent="EjectorRod" unique_id=749222701]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.055)
 mesh = SubResource("CylinderMesh_2fmha")
 
-[node name="Head" type="MeshInstance3D" parent="EjectorRod" unique_id=575529874]
+[node name="Head" type="MeshInstance3D" parent="EjectorRod" unique_id=1159135133]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006, -0.002, -0.095)
 mesh = SubResource("BoxMesh_1y2od")
 
-[node name="Grip" type="Node3D" parent="." unique_id=500123133]
+[node name="Grip" type="Node3D" parent="." unique_id=2070230869]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.03, 0.07)
 
-[node name="Panels" type="MeshInstance3D" parent="Grip" unique_id=700199637]
+[node name="Panels" type="MeshInstance3D" parent="Grip" unique_id=906530594]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.055, 0.002)
 mesh = SubResource("BoxMesh_3j463")
 
-[node name="Muzzle" type="Marker3D" parent="." unique_id=656892399]
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1176708128]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1905)
 
-[node name="SightRear" type="Marker3D" parent="." unique_id=1294920777]
+[node name="SightRear" type="Marker3D" parent="." unique_id=1932967052]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0185, 0.06)
 
-[node name="SightFront" type="Marker3D" parent="." unique_id=1387863238]
+[node name="SightFront" type="Marker3D" parent="." unique_id=368498161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017940868, -0.183)
 
-[node name="Blade" type="MeshInstance3D" parent="SightFront" unique_id=530062736]
+[node name="Blade" type="MeshInstance3D" parent="SightFront" unique_id=1661359102]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005070434, 0)
 mesh = SubResource("BoxMesh_iuunh")

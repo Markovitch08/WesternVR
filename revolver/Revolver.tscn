@@ -1,67 +1,76 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://revolver/Revolver.gd" id="1_qqeu5"]
-[ext_resource type="PackedScene" path="res://revolver/RevolverPlaceholder.tscn" id="2_aqyox"]
+[ext_resource type="Script" path="res://revolver/Revolver.gd" id="1_uocf7"]
+[ext_resource type="PackedScene" path="res://revolver/RevolverPlaceholder.tscn" id="2_ppvu5"]
+[ext_resource type="Script" path="res://revolver/RevolverAudio.gd" id="3_17e15"]
+[ext_resource type="Script" path="res://effects/MuzzleEffects.gd" id="4_m3prt"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uocf7"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xfb2k"]
 friction = 0.45
 bounce = 0.18
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ppvu5"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0ebd8"]
 height = 0.1905
 radius = 0.0095
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_17e15"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ocb3w"]
 size = Vector3(0.011, 0.011, 0.115)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_m3prt"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_218qi"]
 height = 0.0406
 radius = 0.0211
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xfb2k"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ljas5"]
 size = Vector3(0.03, 0.064, 0.04)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0ebd8"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_26a7h"]
 size = Vector3(0.016, 0.032, 0.046)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ocb3w"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_whd06"]
 size = Vector3(0.032, 0.11, 0.036)
 
-[node name="Revolver" type="RigidBody3D" unique_id=935252093]
+[node name="Revolver" type="RigidBody3D" unique_id=2144943597]
 collision_layer = 4
 collision_mask = 524295
 mass = 1.05
-physics_material_override = SubResource("PhysicsMaterial_uocf7")
+physics_material_override = SubResource("PhysicsMaterial_xfb2k")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.018, -0.015)
 continuous_cd = true
-script = ExtResource("1_qqeu5")
+script = ExtResource("1_uocf7")
+impact_sound_prefix = "gun_land_"
 
-[node name="Model" parent="." unique_id=538929824 instance=ExtResource("2_aqyox")]
+[node name="Model" parent="." unique_id=1413209909 instance=ExtResource("2_ppvu5")]
 
-[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=1731677760]
+[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=1366060040]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
-shape = SubResource("CylinderShape3D_ppvu5")
+shape = SubResource("CylinderShape3D_0ebd8")
 
-[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=2100100098]
+[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=1947332987]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.0715)
-shape = SubResource("BoxShape3D_17e15")
-
-[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=190439503]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
-shape = SubResource("CylinderShape3D_m3prt")
-
-[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=831011963]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
-shape = SubResource("BoxShape3D_xfb2k")
-
-[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=1332874249]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
-shape = SubResource("BoxShape3D_0ebd8")
-
-[node name="GripShape" type="CollisionShape3D" parent="." unique_id=1783653698]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
 shape = SubResource("BoxShape3D_ocb3w")
 
-[node name="GripPoint" type="Marker3D" parent="." unique_id=2136775597]
+[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=2011053422]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
+shape = SubResource("CylinderShape3D_218qi")
+
+[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=646751955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
+shape = SubResource("BoxShape3D_ljas5")
+
+[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=758363409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
+shape = SubResource("BoxShape3D_26a7h")
+
+[node name="GripShape" type="CollisionShape3D" parent="." unique_id=103945745]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
+shape = SubResource("BoxShape3D_whd06")
+
+[node name="GripPoint" type="Marker3D" parent="." unique_id=893577228]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, -0.06897114, 0.0965)
+
+[node name="Audio" type="Node" parent="." unique_id=164352164]
+script = ExtResource("3_17e15")
+
+[node name="MuzzleEffects" type="Node3D" parent="." unique_id=1286059555]
+script = ExtResource("4_m3prt")

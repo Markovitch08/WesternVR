@@ -36,6 +36,8 @@ signal impacted(surface: StringName, speed: float, at: Vector3)
 @export var surface := &"metal"
 ## Slowest impact that makes a sound (m/s).
 @export var impact_min_speed := 0.5
+## Landing sounds: plays "<prefix><surface>" (e.g. gun_land_wood). Empty = silent.
+@export var impact_sound_prefix := ""
 
 var grabber: Node3D = null
 ## True when held by its grip point (the "proper" hold), false for a free grab.
@@ -196,4 +198,11 @@ func _on_body_entered(body: Node) -> void:
 	if speed < impact_min_speed or _impact_cooldown > 0.0:
 		return
 	_impact_cooldown = 0.08
-	impacted.emit(Surface.of(body), speed, global_position)
+	var s := Surface.of(body)
+	impacted.emit(s, speed, global_position)
+	if impact_sound_prefix != "":
+		var pool := get_node_or_null(^"/root/SoundPool")
+		if pool:
+			# Louder for harder landings: -24 dB at the threshold, 0 dB at 5 m/s.
+			var db := lerpf(-24.0, 0.0, clampf((speed - impact_min_speed) / (5.0 - impact_min_speed), 0.0, 1.0))
+			pool.play(impact_sound_prefix + String(s), global_position, {"volume_db": db, "unit_size": 1.5})

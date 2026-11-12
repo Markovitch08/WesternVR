@@ -42,6 +42,17 @@ const PART_NAMES: Array[String] = ["Frame", "Barrel", "Cylinder", "Hammer", "Tri
 ## Speed the ejector rod kicks a case out of the gate (m/s).
 @export var eject_speed := 0.9
 
+@export_group("Recoil")
+## Recoil momentum: 255 gr bullet at 260 m/s plus black-powder gas (N s).
+@export var recoil_impulse := 5.6
+## Share of the straight-back kick soaked up by the arm.
+@export_range(0.0, 1.0) var arm_absorbs := 0.68
+## Extra muzzle flip from the wrist pivoting under the bore line (N m s).
+@export var extra_flip := 0.11
+## Hold strength just after the shot (fraction), and seconds to recover.
+@export_range(0.0, 1.0) var hold_after_shot := 0.08
+@export var recoil_recover_time := 0.3
+
 @export_group("Haptics")
 @export var shot_haptic := Vector2(1.0, 0.14)   # amplitude, seconds
 @export var click_haptic := Vector2(0.3, 0.025)
@@ -130,6 +141,17 @@ func discharge() -> Dictionary:
 	return Bullets.fire(get_muzzle_position(), v, exclude)
 
 
+## Kicks the gun back along the bore. The bore line sits above the centre of
+## mass and the hand, so the impulse also flips the muzzle up. The hold goes
+## soft for a moment, then the hand pulls the gun back on target.
+func apply_recoil() -> void:
+	var back := -get_bore_direction()
+	apply_impulse(back * recoil_impulse * (1.0 - arm_absorbs), Vector3.ZERO)
+	apply_torque_impulse(global_basis.x * extra_flip)
+	if is_held():
+		set_hold_compliance(hold_after_shot, recoil_recover_time)
+
+
 # --- Input ----------------------------------------------------------------------
 
 func _physics_process(delta: float) -> void:
@@ -211,6 +233,7 @@ func _on_mechanism_event(name: StringName, data: Dictionary) -> void:
 	match name:
 		&"fired":
 			discharge()
+			apply_recoil()
 			_haptic(grabber, shot_haptic)
 		&"ejected":
 			_spawn_ejected(data["state"] == RevolverMechanism.Chamber.SPENT)

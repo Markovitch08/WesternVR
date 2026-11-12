@@ -7,6 +7,7 @@ var _errors := 0
 
 
 func build_all() -> bool:
+	build_audio()
 	build_revolver_placeholder()
 	build_cartridge()
 	build_revolver()
@@ -341,6 +342,7 @@ func build_revolver() -> void:
 	body.collision_mask = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 19) # world, dynamic, pickables, player body
 	body.physics_material_override = physics_material(0.45, 0.18) # blued steel / walnut
 	body.set("surface", &"metal")
+	body.set("impact_sound_prefix", "gun_land_")
 
 	# Visual model: swap this instance for a real .glb with the same part names.
 	add(body, inst("res://revolver/RevolverPlaceholder.tscn"), "Model")
@@ -365,6 +367,13 @@ func build_revolver() -> void:
 	var gp := Marker3D.new()
 	add(body, gp, "GripPoint", S.GRIP_TOP + _grip_axis_down() * 0.045 + Vector3(0, 0, 0.004))
 	gp.rotation_degrees = Vector3(-15, 0, 0)
+
+	var audio := Node.new()
+	audio.set_script(load("res://revolver/RevolverAudio.gd"))
+	add(body, audio, "Audio")
+	var fx := Node3D.new()
+	fx.set_script(load("res://effects/MuzzleEffects.gd"))
+	add(body, fx, "MuzzleEffects")
 
 	save(body, "res://revolver/Revolver.tscn")
 
@@ -480,3 +489,49 @@ func build_ammo_box() -> void:
 	zcs.shape = _box_shape(Vector3(w.x, w.y * 1.4, w.z))
 	add(zone, zcs, "Shape")
 	save(body, "res://ammo/AmmoBoxBody.tscn")
+
+
+# --------------------------------------------------------------------------
+# Audio: bus layout and baked placeholder sounds
+# --------------------------------------------------------------------------
+
+func build_audio() -> void:
+	# Buses: Master (with a limiter so a shot can't clip) <- World (subtle reverb).
+	while AudioServer.bus_count > 1:
+		AudioServer.remove_bus(1)
+	for i in range(AudioServer.get_bus_effect_count(0) - 1, -1, -1):
+		AudioServer.remove_bus_effect(0, i)
+	var limiter := AudioEffectHardLimiter.new()
+	limiter.ceiling_db = -0.5
+	AudioServer.add_bus_effect(0, limiter)
+	AudioServer.add_bus(1)
+	AudioServer.set_bus_name(1, "World")
+	AudioServer.set_bus_send(1, "Master")
+	var reverb := AudioEffectReverb.new()
+	reverb.room_size = 0.55  # outdoors: small, quiet, mostly the ground and nearby bench
+	reverb.damping = 0.6
+	reverb.spread = 1.0
+	reverb.hipass = 0.25
+	reverb.predelay_msec = 35.0
+	reverb.predelay_feedback = 0.15
+	reverb.dry = 1.0
+	reverb.wet = 0.1
+	AudioServer.add_bus_effect(1, reverb)
+	var layout := AudioServer.generate_bus_layout()
+	if ResourceSaver.save(layout, "res://audio/default_bus_layout.tres") != OK:
+		_errors += 1
+	else:
+		print("build_scenes: wrote res://audio/default_bus_layout.tres")
+
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://audio/generated"))
+	var made := 0
+	for key in ProceduralSounds.KEYS:
+		var path := "res://audio/generated/%s.wav" % key
+		if FileAccess.file_exists(path):
+			continue
+		var err := ProceduralSounds.generate(key).save_to_wav(path)
+		if err != OK:
+			push_error("build_scenes: could not write %s" % path)
+			_errors += 1
+		made += 1
+	print("build_scenes: baked %d placeholder sounds" % made)

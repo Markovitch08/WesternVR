@@ -19,6 +19,7 @@ func spawn_impact(info: Dictionary) -> void:
 	var pos: Vector3 = info["position"]
 	var normal: Vector3 = info["normal"]
 	_emit(surface, pos, normal)
+	_play_hit_sound(surface, pos, info.get("ricochet", false))
 	if not info.get("ricochet", false) or surface == Surface.METAL:
 		_place_decal(info.get("collider"), surface, pos, normal)
 	impact_spawned.emit(info)
@@ -27,6 +28,17 @@ func spawn_impact(info: Dictionary) -> void:
 func decal_count() -> int:
 	_decals = _decals.filter(func(d): return is_instance_valid(d))
 	return _decals.size()
+
+
+func _play_hit_sound(surface: StringName, pos: Vector3, ricochet: bool) -> void:
+	var pool := get_node_or_null(^"/root/SoundPool")
+	if pool == null:
+		return
+	# Steel rings out far down range; dirt and wood thud nearby.
+	var reach := 10.0 if surface == Surface.METAL else 4.0
+	pool.play("hit_" + String(surface), pos, {"volume_db": 2.0, "unit_size": reach, "pitch_var": 0.06})
+	if ricochet:
+		pool.play("ricochet", pos, {"volume_db": 0.0, "unit_size": 6.0, "pitch_var": 0.15})
 
 
 # --- Particles ----------------------------------------------------------------
@@ -44,17 +56,9 @@ func _emit(surface: StringName, pos: Vector3, normal: Vector3) -> void:
 	else:
 		p = pool[_pool_index[surface]]
 		_pool_index[surface] = (_pool_index[surface] + 1) % EMITTERS_PER_SURFACE
-	p.global_transform = Transform3D(_basis_y_to(normal), pos + normal * 0.005)
+	p.global_transform = Transform3D(ImpactEffectsBasis.y_to(normal), pos + normal * 0.005)
 	p.restart()
 	p.emitting = true
-
-
-static func _basis_y_to(n: Vector3) -> Basis:
-	n = n.normalized()
-	var side := Vector3.RIGHT if absf(n.dot(Vector3.RIGHT)) < 0.9 else Vector3.FORWARD
-	var x := side.cross(n).normalized()
-	var z := x.cross(n).normalized()
-	return Basis(x, n, z)
 
 
 func _make_emitter(surface: StringName) -> CPUParticles3D:
@@ -152,7 +156,7 @@ func _place_decal(collider: Object, surface: StringName, pos: Vector3, normal: V
 	d.upper_fade = 0.2
 	d.lower_fade = 0.2
 	parent.add_child(d)
-	var basis := _basis_y_to(normal).rotated(normal.normalized(), randf() * TAU)
+	var basis := ImpactEffectsBasis.y_to(normal).rotated(normal.normalized(), randf() * TAU)
 	d.global_transform = Transform3D(basis, pos)
 	_decals.append(d)
 	_decals = _decals.filter(func(x): return is_instance_valid(x))

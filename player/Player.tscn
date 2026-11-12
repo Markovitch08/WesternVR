@@ -7,39 +7,39 @@
 [ext_resource type="PackedScene" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_ndjxb"]
 [ext_resource type="PackedScene" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_5qrx2"]
 
-[node name="Player" type="XROrigin3D" unique_id=140542406]
+[node name="Player" type="XROrigin3D" unique_id=1640420141]
 script = ExtResource("1_aqcbf")
 
-[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=2043387326]
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=146831289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 near = 0.02
 far = 400.0
 
-[node name="LeftHand" type="XRController3D" parent="." unique_id=320615285]
+[node name="LeftHand" type="XRController3D" parent="." unique_id=1025443455]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.1, -0.35)
 tracker = &"left_hand"
 pose = &"grip"
 show_when_tracked = true
 
-[node name="CollisionHand" parent="LeftHand" unique_id=1448771084 instance=ExtResource("2_gskgj")]
+[node name="CollisionHand" parent="LeftHand" unique_id=738965928 instance=ExtResource("2_gskgj")]
 
-[node name="HandGrabber" type="Node3D" parent="LeftHand" unique_id=1654261847]
+[node name="HandGrabber" type="Node3D" parent="LeftHand" unique_id=1588329694]
 script = ExtResource("3_06mnu")
 
-[node name="RightHand" type="XRController3D" parent="." unique_id=1682273823]
+[node name="RightHand" type="XRController3D" parent="." unique_id=1767586632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.1, -0.35)
 tracker = &"right_hand"
 pose = &"grip"
 show_when_tracked = true
 
-[node name="CollisionHand" parent="RightHand" unique_id=1601319735 instance=ExtResource("4_mhpjh")]
+[node name="CollisionHand" parent="RightHand" unique_id=1810454708 instance=ExtResource("4_mhpjh")]
 
-[node name="HandGrabber" type="Node3D" parent="RightHand" unique_id=275624484]
+[node name="HandGrabber" type="Node3D" parent="RightHand" unique_id=449409642]
 script = ExtResource("3_06mnu")
 
-[node name="MovementTurn" parent="RightHand" unique_id=1023166521 instance=ExtResource("5_ndjxb")]
+[node name="MovementTurn" parent="RightHand" unique_id=1200094432 instance=ExtResource("5_ndjxb")]
 turn_mode = 1
 smooth_turn_speed = 2.5
 step_turn_angle = 30.0
 
-[node name="PlayerBody" parent="." unique_id=209156804 instance=ExtResource("6_5qrx2")]
+[node name="PlayerBody" parent="." unique_id=329817314 instance=ExtResource("6_5qrx2")]

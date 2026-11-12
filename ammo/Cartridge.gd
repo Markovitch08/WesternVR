@@ -20,6 +20,7 @@ static var _loose: Array[Cartridge] = []
 func _ready() -> void:
 	super._ready()
 	surface = &"brass"
+	impact_sound_prefix = "case_land_"
 	impact_min_speed = 0.25
 	_apply_state()
 	if spent:
