@@ -7,6 +7,8 @@ var _errors := 0
 
 
 func build_all() -> bool:
+	build_revolver_placeholder()
+	build_revolver()
 	build_player()
 	build_main()
 	return _errors == 0
@@ -68,6 +70,27 @@ static func box_mesh(parent: Node, name: String, size: Vector3, pos: Vector3, ma
 	bm.material = material
 	mi.mesh = bm
 	return add(parent, mi, name, pos)
+
+
+## A cylinder mesh whose axis runs along Z (the bore direction).
+static func z_cylinder(parent: Node, name: String, radius: float, length: float, pos: Vector3,
+		material: Material, sides := 16) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	var cm := CylinderMesh.new()
+	cm.top_radius = radius
+	cm.bottom_radius = radius
+	cm.height = length
+	cm.radial_segments = sides
+	cm.rings = 1
+	cm.material = material
+	mi.mesh = cm
+	add(parent, mi, name, pos)
+	mi.rotation_degrees = Vector3(90, 0, 0)
+	return mi
+
+
+static func pivot(parent: Node, name: String, pos: Vector3) -> Node3D:
+	return add(parent, Node3D.new(), name, pos)
 
 
 static func physics_material(friction: float, bounce: float, rough := false) -> PhysicsMaterial:
@@ -167,6 +190,11 @@ func build_main() -> void:
 	else:
 		_build_temp_world(main)
 
+	# The revolver lies on the bench, right side up.
+	var gun: Node3D = inst("res://revolver/Revolver.tscn")
+	add(main, gun, "Revolver", Vector3(-0.1, 0.935, -0.05))
+	gun.rotation_degrees = Vector3(0, 80, 90)
+
 	var player: Node3D = inst("res://player/Player.tscn")
 	# Standing behind the bench, facing down-range (-Z).
 	add(main, player, "Player", Vector3(0, 0, 0.55))
@@ -190,3 +218,166 @@ func _build_temp_world(main: Node3D) -> void:
 			mat(Color(0.76, 0.62, 0.42)), &"dirt", physics_material(0.9, 0.05, true))
 	static_box(main, "Bench", Vector3(1.4, 0.06, 0.6), Vector3(0, 0.88, 0),
 			mat(Color(0.45, 0.3, 0.18)), &"wood", physics_material(0.6, 0.15))
+
+
+# --------------------------------------------------------------------------
+# Revolver: placeholder model (visual only, separately pivoted parts)
+# --------------------------------------------------------------------------
+
+func build_revolver_placeholder() -> void:
+	var S := RevolverSpec
+	var blued := mat(Color(0.12, 0.13, 0.16), 0.32, 0.9)
+	var frame_mat := mat(Color(0.33, 0.29, 0.25), 0.4, 0.85) # case-hardened colours
+	var walnut := mat(Color(0.33, 0.17, 0.08), 0.55)
+	var dark := mat(Color(0.03, 0.03, 0.03), 0.9)
+
+	var root := Node3D.new()
+	root.name = "RevolverModel"
+
+	# Frame: top strap, front, bottom, recoil shield, trigger guard. Static.
+	var frame := pivot(root, "Frame", Vector3.ZERO)
+	box_mesh(frame, "TopStrap", Vector3(0.016, 0.008, 0.066), Vector3(0, 0.0145, 0.027), frame_mat)
+	box_mesh(frame, "FrameFront", Vector3(0.026, 0.036, 0.012), Vector3(0, -0.011, -0.006), frame_mat)
+	box_mesh(frame, "FrameBottom", Vector3(0.022, 0.010, 0.050), Vector3(0, -0.039, 0.022), frame_mat)
+	# Recoil shield behind the cylinder, with a gap on the right for the loading gate.
+	box_mesh(frame, "RecoilShieldLeft", Vector3(0.0295, 0.052, 0.014), Vector3(-0.00725, -0.012, 0.0485), frame_mat)
+	box_mesh(frame, "RecoilShieldRightTop", Vector3(0.0145, 0.019, 0.014), Vector3(0.01475, 0.0045, 0.0485), frame_mat)
+	box_mesh(frame, "RecoilShieldRightLow", Vector3(0.0145, 0.016, 0.014), Vector3(0.01475, -0.030, 0.0485), frame_mat)
+	box_mesh(frame, "Backstrap", Vector3(0.020, 0.032, 0.018), Vector3(0, -0.016, 0.066), frame_mat)
+	z_cylinder(frame, "CylinderPin", 0.0035, 0.012, Vector3(0, S.CYLINDER_AXIS_Y, -0.006), blued, 8)
+	var guard := MeshInstance3D.new()
+	var torus := TorusMesh.new()
+	torus.inner_radius = 0.0115
+	torus.outer_radius = 0.0145
+	torus.rings = 16
+	torus.ring_segments = 6
+	torus.material = mat(Color(0.7, 0.55, 0.25), 0.35, 0.9) # brass guard
+	guard.mesh = torus
+	add(frame, guard, "TriggerGuard", Vector3(0, -0.052, 0.040))
+	guard.rotation_degrees = Vector3(0, 0, 90)
+
+	# Barrel with ejector housing on its right side. Static.
+	var barrel := pivot(root, "Barrel", Vector3.ZERO)
+	z_cylinder(barrel, "Tube", S.BARREL_RADIUS, S.BARREL_LENGTH, Vector3(0, 0, -S.BARREL_LENGTH * 0.5), blued)
+	z_cylinder(barrel, "Bore", 0.0058, 0.002, Vector3(0, 0, -S.BARREL_LENGTH - 0.0005), dark, 10)
+	z_cylinder(barrel, "EjectorHousing", 0.0055, 0.115, Vector3(S.CHAMBER_RADIUS, S.CYLINDER_AXIS_Y, -0.0715), blued, 10)
+
+	# Cylinder: rotates about Z on its own axis.
+	var cyl := pivot(root, "Cylinder", S.CYLINDER_CENTER)
+	z_cylinder(cyl, "Body", S.CYLINDER_RADIUS, S.CYLINDER_LENGTH, Vector3.ZERO, blued, 18)
+	for i in S.CHAMBER_COUNT:
+		var a := deg_to_rad(60.0 * i)
+		var p := Vector3(sin(a), cos(a), 0) * S.CHAMBER_RADIUS
+		z_cylinder(cyl, "Flute%d" % i, 0.0052, S.CYLINDER_LENGTH + 0.0004, p + Vector3(0, 0, 0), dark, 8)
+
+	# Hammer: pivots about X at its base. Rotates backward to cock.
+	var hammer := pivot(root, "Hammer", S.HAMMER_PIVOT)
+	box_mesh(hammer, "Body", Vector3(0.008, 0.032, 0.009), Vector3(0, 0.015, 0), frame_mat)
+	box_mesh(hammer, "Spur", Vector3(0.010, 0.006, 0.020), Vector3(0, 0.031, 0.010), frame_mat)
+
+	# Trigger: pivots about X; pulled, its blade swings back.
+	var trigger := pivot(root, "Trigger", S.TRIGGER_PIVOT)
+	box_mesh(trigger, "Blade", Vector3(0.004, 0.020, 0.005), Vector3(0, -0.010, 0.001), blued)
+
+	# Loading gate: right side of the recoil shield, hinged on a fore-aft axis
+	# at its bottom edge; opens outward to the right.
+	var gate := pivot(root, "LoadingGate", S.GATE_PIVOT)
+	box_mesh(gate, "Plate", Vector3(0.012, 0.016, 0.013), Vector3(0, 0.008, 0), frame_mat)
+
+	# Ejector rod: slides back (+Z) through the chamber at the gate.
+	var rod := pivot(root, "EjectorRod", S.EJECTOR_PIVOT)
+	z_cylinder(rod, "Rod", 0.0022, 0.11, Vector3(0, 0, -0.055), blued, 8)
+	box_mesh(rod, "Head", Vector3(0.006, 0.006, 0.010), Vector3(0.006, -0.002, -0.095), blued)
+
+	# Grip: walnut panels on a raked backstrap.
+	var grip := pivot(root, "Grip", S.GRIP_TOP)
+	grip.rotation_degrees = Vector3(S.GRIP_ANGLE_DEG, 0, 0)
+	box_mesh(grip, "Panels", Vector3(0.032, S.GRIP_LENGTH, 0.034), Vector3(0, -S.GRIP_LENGTH * 0.5, 0.002), walnut)
+
+	# Sights and muzzle markers.
+	var muzzle := Marker3D.new()
+	add(root, muzzle, "Muzzle", S.MUZZLE)
+	var rear := Marker3D.new()
+	add(root, rear, "SightRear", S.SIGHT_REAR)
+	var front_top := front_sight_height()
+	var front := Marker3D.new()
+	add(root, front, "SightFront", Vector3(0, front_top, S.SIGHT_FRONT_Z))
+	var blade_h := front_top - S.BARREL_RADIUS + 0.001
+	box_mesh(front, "Blade", Vector3(0.0025, blade_h, 0.012), Vector3(0, -blade_h * 0.5, 0), blued)
+
+	save(root, "res://revolver/RevolverPlaceholder.tscn")
+
+
+## Height of the front blade top (gun frame) that zeroes the sights at
+## RevolverSpec.ZERO_DISTANCE with the bore exactly along -Z.
+func front_sight_height() -> float:
+	var S := RevolverSpec
+	var BallisticsScript = load("res://ballistics/Ballistics.gd") if ResourceLoader.exists("res://ballistics/Ballistics.gd") else null
+	if BallisticsScript == null:
+		return 0.0175
+	return BallisticsScript.front_sight_height_for_zero(S.SIGHT_REAR, S.SIGHT_FRONT_Z, S.MUZZLE,
+			S.ZERO_DISTANCE, S.MUZZLE_VELOCITY)
+
+
+# --------------------------------------------------------------------------
+# Revolver: physical body
+# --------------------------------------------------------------------------
+
+func build_revolver() -> void:
+	var S := RevolverSpec
+	var body := RigidBody3D.new()
+	body.name = "Revolver"
+	body.set_script(load("res://revolver/Revolver.gd"))
+	body.mass = S.MASS
+	body.center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
+	body.center_of_mass = S.CENTER_OF_MASS
+	body.continuous_cd = true
+	body.collision_layer = 1 << 2   # Pickable Objects
+	body.collision_mask = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 19) # world, dynamic, pickables, player body
+	body.physics_material_override = physics_material(0.45, 0.18) # blued steel / walnut
+	body.set("surface", &"metal")
+
+	# Visual model: swap this instance for a real .glb with the same part names.
+	add(body, inst("res://revolver/RevolverPlaceholder.tscn"), "Model")
+
+	# Compound collision from convex primitives matching the real gun.
+	var shapes := [
+		["BarrelShape", _cyl_shape(S.BARREL_RADIUS + 0.0007, S.BARREL_LENGTH), Vector3(0, 0, -S.BARREL_LENGTH * 0.5), Vector3(90, 0, 0)],
+		["EjectorShape", _box_shape(Vector3(0.011, 0.011, 0.115)), Vector3(S.CHAMBER_RADIUS, S.CYLINDER_AXIS_Y, -0.0715), Vector3.ZERO],
+		["CylinderShape", _cyl_shape(S.CYLINDER_RADIUS, S.CYLINDER_LENGTH), S.CYLINDER_CENTER, Vector3(90, 0, 0)],
+		["FrameShape", _box_shape(Vector3(0.030, 0.064, 0.040)), Vector3(0, -0.010, 0.058), Vector3.ZERO],
+		["TriggerGuardShape", _box_shape(Vector3(0.016, 0.032, 0.046)), Vector3(0, -0.048, 0.040), Vector3.ZERO],
+		["GripShape", _box_shape(Vector3(0.032, S.GRIP_LENGTH, 0.036)), S.GRIP_TOP + _grip_axis_down() * S.GRIP_LENGTH * 0.5, Vector3(S.GRIP_ANGLE_DEG, 0, 0)],
+	]
+	for sh in shapes:
+		var cs := CollisionShape3D.new()
+		cs.shape = sh[1]
+		add(body, cs, sh[0], sh[2])
+		cs.rotation_degrees = sh[3]
+
+	# Where the controller's grip pose sits when holding the gun properly.
+	# Pitch it to change how the gun sits in the hand.
+	var gp := Marker3D.new()
+	add(body, gp, "GripPoint", S.GRIP_TOP + _grip_axis_down() * 0.045 + Vector3(0, 0, 0.004))
+	gp.rotation_degrees = Vector3(-15, 0, 0)
+
+	save(body, "res://revolver/Revolver.tscn")
+
+
+static func _grip_axis_down() -> Vector3:
+	var a := deg_to_rad(RevolverSpec.GRIP_ANGLE_DEG)
+	# The grip's local -Y axis after rotating about X by the grip angle.
+	return Vector3(0, -cos(a), -sin(a))
+
+
+static func _cyl_shape(radius: float, height: float) -> CylinderShape3D:
+	var c := CylinderShape3D.new()
+	c.radius = radius
+	c.height = height
+	return c
+
+
+static func _box_shape(size: Vector3) -> BoxShape3D:
+	var b := BoxShape3D.new()
+	b.size = size
+	return b

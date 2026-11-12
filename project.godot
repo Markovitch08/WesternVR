@@ -57,6 +57,9 @@ player/standard_height=1.75
 common/physics_ticks_per_second=72
 common/max_physics_steps_per_frame=4
 common/physics_jitter_fix=0.0
+jolt_physics_3d/simulation/position_steps=4
+jolt_physics_3d/simulation/penetration_slop=0.004
+jolt_physics_3d/simulation/speculative_contact_distance=0.01
 
 [rendering]
 

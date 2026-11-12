@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://revolver/Revolver.gd" id="1_qqeu5"]
+[ext_resource type="PackedScene" path="res://revolver/RevolverPlaceholder.tscn" id="2_aqyox"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uocf7"]
+friction = 0.45
+bounce = 0.18
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ppvu5"]
+height = 0.1905
+radius = 0.0095
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17e15"]
+size = Vector3(0.011, 0.011, 0.115)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m3prt"]
+height = 0.0406
+radius = 0.0211
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xfb2k"]
+size = Vector3(0.03, 0.064, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ebd8"]
+size = Vector3(0.016, 0.032, 0.046)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ocb3w"]
+size = Vector3(0.032, 0.11, 0.036)
+
+[node name="Revolver" type="RigidBody3D" unique_id=2050206910]
+collision_layer = 4
+collision_mask = 524295
+mass = 1.05
+physics_material_override = SubResource("PhysicsMaterial_uocf7")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.018, -0.015)
+continuous_cd = true
+script = ExtResource("1_qqeu5")
+
+[node name="Model" parent="." unique_id=1602471336 instance=ExtResource("2_aqyox")]
+
+[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=559131874]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
+shape = SubResource("CylinderShape3D_ppvu5")
+
+[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=1855108677]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.0715)
+shape = SubResource("BoxShape3D_17e15")
+
+[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=2015037704]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
+shape = SubResource("CylinderShape3D_m3prt")
+
+[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=171808105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
+shape = SubResource("BoxShape3D_xfb2k")
+
+[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=2001576743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
+shape = SubResource("BoxShape3D_0ebd8")
+
+[node name="GripShape" type="CollisionShape3D" parent="." unique_id=479912423]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
+shape = SubResource("BoxShape3D_ocb3w")
+
+[node name="GripPoint" type="Marker3D" parent="." unique_id=5719134]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, -0.06897114, 0.0965)
