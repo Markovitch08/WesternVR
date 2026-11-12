@@ -22,8 +22,9 @@ off with Quest Link (press Play in the editor) or on the headset.
 
 ## Step 3: Firing and ballistics
 - [ ] Aim at the 15 m plate with the blade in the groove, top level: hits
-      land on the point of aim. At 25 m they land ~1-2 cm low; at 5-7 m about
-      1 cm low.
+      land on the point of aim. Elsewhere they land slightly low: about 8 mm
+      at 5 m, 5 mm at 7 m, 2 mm at 10 m, 2 mm at 20 m, 7 mm at 25 m (so any
+      bigger miss is your hold, or a sign the zero is off).
 - [ ] Impacts: dust on the ground, splinters on posts, sparks on the plates;
       small holes/lead splashes stay where you hit.
 - [ ] Plates swing when hit. Shallow shots off a plate edge sometimes ricochet.
@@ -54,7 +55,7 @@ off with Quest Link (press Play in the editor) or on the headset.
 - [ ] Smoke cloud: big, white-grey, drifts to the right with the wind, gone
       in ~3 s.
 - [ ] Gunshot: crack and boom feel loud and close, the echo comes back from
-      the rock wall (~0.23 s) and the building; reverb is subtle.
+      the rock wall (~0.22 s) and the building; reverb is subtle.
 - [ ] Mechanical sounds are audible but not too loud next to your ear.
 - [ ] Rapid fire: no sound cut-outs or stacking.
 
