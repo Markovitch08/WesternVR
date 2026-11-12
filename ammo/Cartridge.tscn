@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ammo/Cartridge.gd" id="1_7a0rs"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hhpol"]
+friction = 0.35
+bounce = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lch77"]
+albedo_color = Color(0.85, 0.66, 0.3, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dgjs8"]
+material = SubResource("StandardMaterial3D_lch77")
+top_radius = 0.00605
+bottom_radius = 0.00605
+height = 0.0325
+radial_segments = 10
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_072ik"]
+material = SubResource("StandardMaterial3D_lch77")
+top_radius = 0.00645
+bottom_radius = 0.00645
+height = 0.0015
+radial_segments = 10
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1pnql"]
+material = SubResource("StandardMaterial3D_lch77")
+top_radius = 0.0024
+bottom_radius = 0.0024
+height = 0.0004
+radial_segments = 8
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3u0ny"]
+albedo_color = Color(0.42, 0.42, 0.44, 1)
+metallic = 0.6
+roughness = 0.55
+
+[sub_resource type="SphereMesh" id="SphereMesh_mjiti"]
+material = SubResource("StandardMaterial3D_3u0ny")
+radius = 0.00574
+height = 0.0162
+radial_segments = 10
+rings = 5
+is_hemisphere = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lhxoo"]
+height = 0.0406
+radius = 0.00645
+
+[node name="Cartridge" type="RigidBody3D" unique_id=355246007]
+collision_layer = 4
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_hhpol")
+continuous_cd = true
+script = ExtResource("1_7a0rs")
+
+[node name="Model" type="Node3D" parent="." unique_id=1411761430]
+
+[node name="Case" type="MeshInstance3D" parent="Model" unique_id=706837253]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_dgjs8")
+
+[node name="Rim" type="MeshInstance3D" parent="Model" unique_id=1983546530]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.0155)
+mesh = SubResource("CylinderMesh_072ik")
+
+[node name="Primer" type="MeshInstance3D" parent="Model" unique_id=712730865]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.01635)
+mesh = SubResource("CylinderMesh_1pnql")
+
+[node name="Bullet" type="MeshInstance3D" parent="Model" unique_id=1248208794]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, -0.01625)
+mesh = SubResource("SphereMesh_mjiti")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1268363334]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_lhxoo")

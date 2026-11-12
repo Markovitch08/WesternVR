@@ -1,0 +1,119 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ammo/AmmoBox.gd" id="1_33w2m"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0c1gf"]
+size = Vector3(0.14, 0.006, 0.09)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t7mw2"]
+albedo_color = Color(0.5, 0.36, 0.22, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_6bkdx"]
+material = SubResource("StandardMaterial3D_t7mw2")
+size = Vector3(0.14, 0.006, 0.09)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_86n7f"]
+size = Vector3(0.14, 0.05, 0.006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e36ys"]
+material = SubResource("StandardMaterial3D_t7mw2")
+size = Vector3(0.14, 0.05, 0.006)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3qpy5"]
+size = Vector3(0.14, 0.05, 0.006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3uq24"]
+material = SubResource("StandardMaterial3D_t7mw2")
+size = Vector3(0.14, 0.05, 0.006)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2mc1v"]
+size = Vector3(0.006, 0.05, 0.09)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r7tyi"]
+material = SubResource("StandardMaterial3D_t7mw2")
+size = Vector3(0.006, 0.05, 0.09)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j3ddb"]
+size = Vector3(0.006, 0.05, 0.09)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n1ufu"]
+material = SubResource("StandardMaterial3D_t7mw2")
+size = Vector3(0.006, 0.05, 0.09)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g7bdh"]
+albedo_color = Color(0.8, 0.62, 0.3, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4jg8d"]
+material = SubResource("StandardMaterial3D_g7bdh")
+top_radius = 0.0057
+bottom_radius = 0.00605
+height = 0.0406
+radial_segments = 8
+rings = 1
+
+[sub_resource type="MultiMesh" id="MultiMesh_hanu4"]
+transform_format = 1
+instance_count = 54
+mesh = SubResource("CylinderMesh_4jg8d")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uwbvb"]
+size = Vector3(0.14, 0.07, 0.09)
+
+[node name="AmmoBoxBody" type="StaticBody3D" unique_id=2075185486]
+metadata/surface = &"wood"
+
+[node name="BottomShape" type="CollisionShape3D" parent="." unique_id=1414267322]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+shape = SubResource("BoxShape3D_0c1gf")
+
+[node name="Bottom" type="MeshInstance3D" parent="." unique_id=1164512666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+mesh = SubResource("BoxMesh_6bkdx")
+
+[node name="FrontShape" type="CollisionShape3D" parent="." unique_id=1355120497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -0.042000003)
+shape = SubResource("BoxShape3D_86n7f")
+
+[node name="Front" type="MeshInstance3D" parent="." unique_id=301096449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -0.042000003)
+mesh = SubResource("BoxMesh_e36ys")
+
+[node name="BackShape" type="CollisionShape3D" parent="." unique_id=1354385133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.042000003)
+shape = SubResource("BoxShape3D_3qpy5")
+
+[node name="Back" type="MeshInstance3D" parent="." unique_id=420655140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.042000003)
+mesh = SubResource("BoxMesh_3uq24")
+
+[node name="LeftShape" type="CollisionShape3D" parent="." unique_id=1252565942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.067, 0.025, 0)
+shape = SubResource("BoxShape3D_2mc1v")
+
+[node name="Left" type="MeshInstance3D" parent="." unique_id=1747495772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.067, 0.025, 0)
+mesh = SubResource("BoxMesh_r7tyi")
+
+[node name="RightShape" type="CollisionShape3D" parent="." unique_id=1651274167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.067, 0.025, 0)
+shape = SubResource("BoxShape3D_j3ddb")
+
+[node name="Right" type="MeshInstance3D" parent="." unique_id=770015538]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.067, 0.025, 0)
+mesh = SubResource("BoxMesh_n1ufu")
+
+[node name="Rounds" type="MultiMeshInstance3D" parent="." unique_id=2131923087]
+multimesh = SubResource("MultiMesh_hanu4")
+
+[node name="GrabZone" type="Area3D" parent="." unique_id=635944227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.030000001, 0)
+collision_layer = 262144
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_33w2m")
+
+[node name="Shape" type="CollisionShape3D" parent="GrabZone" unique_id=287245930]
+shape = SubResource("BoxShape3D_uwbvb")

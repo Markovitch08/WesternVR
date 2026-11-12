@@ -35,6 +35,13 @@ const PART_NAMES: Array[String] = ["Frame", "Barrel", "Cylinder", "Hammer", "Tri
 ## The other hand must be this close to the ejector rod head (m).
 @export var ejector_reach := 0.12
 
+@export_group("Reloading")
+@export var cartridge_scene: PackedScene = preload("res://ammo/Cartridge.tscn")
+## A held live cartridge this close to the open chamber mouth slides in (m).
+@export var insert_radius := 0.03
+## Speed the ejector rod kicks a case out of the gate (m/s).
+@export var eject_speed := 0.9
+
 @export_group("Haptics")
 @export var shot_haptic := Vector2(1.0, 0.14)   # amplitude, seconds
 @export var click_haptic := Vector2(0.3, 0.025)
@@ -132,6 +139,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		mechanism.set_trigger(0.0)
 	_read_ejector_hand(delta)
+	_check_insert()
 
 
 func _edge(g: Node, action: String) -> bool:
@@ -204,7 +212,11 @@ func _on_mechanism_event(name: StringName, data: Dictionary) -> void:
 		&"fired":
 			discharge()
 			_haptic(grabber, shot_haptic)
-		&"ejected", &"round_inserted", &"ejector_stroke":
+		&"ejected":
+			_spawn_ejected(data["state"] == RevolverMechanism.Chamber.SPENT)
+			_haptic(grabber, click_haptic)
+			_haptic(_ejector_hand(), click_haptic)
+		&"round_inserted", &"ejector_stroke":
 			_haptic(grabber, click_haptic * Vector2(0.7, 1.0))
 			var off := _ejector_hand()
 			if off:
@@ -316,3 +328,51 @@ static func _round_material(state: int) -> Material:
 		_spent_mat.metallic = 0.7
 		_spent_mat.roughness = 0.6
 	return _spent_mat if state == RevolverMechanism.Chamber.SPENT else _live_mat
+
+
+# --- Reloading -------------------------------------------------------------------
+
+## The mouth of the chamber behind the loading gate (3 o'clock, rear face), world space.
+func get_gate_chamber_mouth() -> Vector3:
+	var cyl := part("Cylinder")
+	if cyl == null or not _rest.has("Cylinder"):
+		return global_position
+	var center: Vector3 = cyl.get_parent().global_transform * (_rest["Cylinder"] as Transform3D).origin
+	return center + global_basis * Vector3(RevolverSpec.CHAMBER_RADIUS, 0, RevolverSpec.CYLINDER_LENGTH * 0.5)
+
+
+## A live cartridge held in the other hand slides in when brought to the open gate.
+func _check_insert() -> void:
+	if not mechanism.gate_chamber_accessible():
+		return
+	if mechanism.chambers[mechanism.gate_chamber()] != RevolverMechanism.Chamber.EMPTY:
+		return
+	if not grabber is HandGrabber:
+		return
+	var other: HandGrabber = grabber.get_other()
+	if other == null or not other.held is Cartridge:
+		return
+	var round: Cartridge = other.held
+	if round.spent or round.global_position.distance_to(get_gate_chamber_mouth()) > insert_radius:
+		return
+	if mechanism.insert_round():
+		other.release()
+		round.queue_free()
+
+
+## The ejector pushes the case (or a live round) out of the gate, rearward.
+func _spawn_ejected(spent: bool) -> void:
+	if cartridge_scene == null:
+		return
+	var c: Cartridge = cartridge_scene.instantiate()
+	c.spent = spent
+	var world := get_tree().current_scene if get_tree().current_scene else get_parent()
+	world.add_child(c)
+	var mouth := get_gate_chamber_mouth()
+	c.global_transform = Transform3D(global_basis, mouth + global_basis * Vector3(0, 0, RevolverSpec.CASE_LENGTH * 0.5 + 0.002))
+	c.linear_velocity = linear_velocity + global_basis * Vector3(0.15, 0.05, 1.0).normalized() * eject_speed
+	c.angular_velocity = global_basis * Vector3(randf_range(-6, 6), randf_range(-6, 6), 0)
+	c.add_collision_exception_with(self)
+	get_tree().create_timer(0.25).timeout.connect(func():
+		if is_instance_valid(c):
+			c.remove_collision_exception_with(self))

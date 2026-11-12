@@ -1,87 +1,91 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_cmtxc"]
-[ext_resource type="Script" path="res://player/FrameRateGuard.gd" id="2_tv7ag"]
-[ext_resource type="PackedScene" path="res://revolver/Revolver.tscn" id="3_qtrhv"]
-[ext_resource type="PackedScene" path="res://player/Player.tscn" id="4_o80qs"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_tv7ag"]
+[ext_resource type="Script" path="res://player/FrameRateGuard.gd" id="2_qtrhv"]
+[ext_resource type="PackedScene" path="res://revolver/Revolver.tscn" id="3_o80qs"]
+[ext_resource type="PackedScene" path="res://ammo/AmmoBoxBody.tscn" id="4_0h8po"]
+[ext_resource type="PackedScene" path="res://player/Player.tscn" id="5_bg6xb"]
 
-[sub_resource type="Environment" id="Environment_0h8po"]
+[sub_resource type="Environment" id="Environment_7a1mn"]
 background_mode = 1
 background_color = Color(0.72, 0.8, 0.9, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.8, 0.75, 0.7, 1)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bg6xb"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m4geg"]
 friction = 0.9
 rough = true
 bounce = 0.05
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_7a1mn"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_8bq6g"]
 size = Vector3(40, 0.2, 40)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m4geg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50616"]
 albedo_color = Color(0.76, 0.62, 0.42, 1)
 roughness = 0.8
 
-[sub_resource type="BoxMesh" id="BoxMesh_8bq6g"]
-material = SubResource("StandardMaterial3D_m4geg")
+[sub_resource type="BoxMesh" id="BoxMesh_jjrvb"]
+material = SubResource("StandardMaterial3D_50616")
 size = Vector3(40, 0.2, 40)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_50616"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4w566"]
 friction = 0.6
 bounce = 0.15
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jjrvb"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_wf831"]
 size = Vector3(1.4, 0.06, 0.6)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4w566"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_samfq"]
 albedo_color = Color(0.45, 0.3, 0.18, 1)
 roughness = 0.8
 
-[sub_resource type="BoxMesh" id="BoxMesh_wf831"]
-material = SubResource("StandardMaterial3D_4w566")
+[sub_resource type="BoxMesh" id="BoxMesh_v15jc"]
+material = SubResource("StandardMaterial3D_samfq")
 size = Vector3(1.4, 0.06, 0.6)
 
-[node name="Main" type="Node3D" unique_id=788213921]
+[node name="Main" type="Node3D" unique_id=634743265]
 
-[node name="StartXR" parent="." unique_id=601585338 instance=ExtResource("1_cmtxc")]
+[node name="StartXR" parent="." unique_id=1728115821 instance=ExtResource("1_tv7ag")]
 
-[node name="FrameRateGuard" type="Node" parent="." unique_id=1759689668 node_paths=PackedStringArray("start_xr")]
-script = ExtResource("2_tv7ag")
+[node name="FrameRateGuard" type="Node" parent="." unique_id=1326173933 node_paths=PackedStringArray("start_xr")]
+script = ExtResource("2_qtrhv")
 start_xr = NodePath("../StartXR")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2124609528]
-environment = SubResource("Environment_0h8po")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1600828434]
+environment = SubResource("Environment_7a1mn")
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1986452850]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=97391221]
 transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=878316590]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1642661967]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 collision_mask = 0
-physics_material_override = SubResource("PhysicsMaterial_bg6xb")
+physics_material_override = SubResource("PhysicsMaterial_m4geg")
 metadata/surface = &"dirt"
 
-[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=18534494]
-shape = SubResource("BoxShape3D_7a1mn")
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=1573298559]
+shape = SubResource("BoxShape3D_8bq6g")
 
-[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1189256138]
-mesh = SubResource("BoxMesh_8bq6g")
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=753483772]
+mesh = SubResource("BoxMesh_jjrvb")
 
-[node name="Bench" type="StaticBody3D" parent="." unique_id=1987396011]
+[node name="Bench" type="StaticBody3D" parent="." unique_id=2067267180]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
 collision_mask = 0
-physics_material_override = SubResource("PhysicsMaterial_50616")
+physics_material_override = SubResource("PhysicsMaterial_4w566")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench" unique_id=1369153171]
-shape = SubResource("BoxShape3D_jjrvb")
+[node name="Collision" type="CollisionShape3D" parent="Bench" unique_id=1450195100]
+shape = SubResource("BoxShape3D_wf831")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench" unique_id=390981308]
-mesh = SubResource("BoxMesh_wf831")
+[node name="Mesh" type="MeshInstance3D" parent="Bench" unique_id=504464358]
+mesh = SubResource("BoxMesh_v15jc")
 
-[node name="Revolver" parent="." unique_id=105235132 instance=ExtResource("3_qtrhv")]
+[node name="Revolver" parent="." unique_id=935252093 instance=ExtResource("3_o80qs")]
 transform = Transform3D(-7.590405e-09, -0.17364822, 0.9848077, 1, -4.371139e-08, 0, 4.304731e-08, 0.9848077, 0.17364822, -0.1, 0.935, -0.05)
 
-[node name="Player" parent="." unique_id=1080113903 instance=ExtResource("4_o80qs")]
+[node name="AmmoBox" parent="." unique_id=2075185486 instance=ExtResource("4_0h8po")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.91, -0.05)
+
+[node name="Player" parent="." unique_id=140542406 instance=ExtResource("5_bg6xb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.55)

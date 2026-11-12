@@ -27,7 +27,7 @@ size = Vector3(0.016, 0.032, 0.046)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ocb3w"]
 size = Vector3(0.032, 0.11, 0.036)
 
-[node name="Revolver" type="RigidBody3D" unique_id=105235132]
+[node name="Revolver" type="RigidBody3D" unique_id=935252093]
 collision_layer = 4
 collision_mask = 524295
 mass = 1.05
@@ -37,31 +37,31 @@ center_of_mass = Vector3(0, -0.018, -0.015)
 continuous_cd = true
 script = ExtResource("1_qqeu5")
 
-[node name="Model" parent="." unique_id=486263985 instance=ExtResource("2_aqyox")]
+[node name="Model" parent="." unique_id=538929824 instance=ExtResource("2_aqyox")]
 
-[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=88527417]
+[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=1731677760]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
 shape = SubResource("CylinderShape3D_ppvu5")
 
-[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=941686174]
+[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=2100100098]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.0715)
 shape = SubResource("BoxShape3D_17e15")
 
-[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=1595120721]
+[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=190439503]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
 shape = SubResource("CylinderShape3D_m3prt")
 
-[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=1164246734]
+[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=831011963]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
 shape = SubResource("BoxShape3D_xfb2k")
 
-[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=1411150686]
+[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=1332874249]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
 shape = SubResource("BoxShape3D_0ebd8")
 
-[node name="GripShape" type="CollisionShape3D" parent="." unique_id=762405885]
+[node name="GripShape" type="CollisionShape3D" parent="." unique_id=1783653698]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
 shape = SubResource("BoxShape3D_ocb3w")
 
-[node name="GripPoint" type="Marker3D" parent="." unique_id=1607819915]
+[node name="GripPoint" type="Marker3D" parent="." unique_id=2136775597]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, -0.06897114, 0.0965)

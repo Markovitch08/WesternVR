@@ -8,7 +8,9 @@ var _errors := 0
 
 func build_all() -> bool:
 	build_revolver_placeholder()
+	build_cartridge()
 	build_revolver()
+	build_ammo_box()
 	build_player()
 	build_main()
 	return _errors == 0
@@ -194,6 +196,9 @@ func build_main() -> void:
 	var gun: Node3D = inst("res://revolver/Revolver.tscn")
 	add(main, gun, "Revolver", Vector3(-0.1, 0.935, -0.05))
 	gun.rotation_degrees = Vector3(0, 80, 90)
+
+	var box: Node3D = inst("res://ammo/AmmoBoxBody.tscn")
+	add(main, box, "AmmoBox", Vector3(0.28, 0.91, -0.05))
 
 	var player: Node3D = inst("res://player/Player.tscn")
 	# Standing behind the bench, facing down-range (-Z).
@@ -381,3 +386,97 @@ static func _box_shape(size: Vector3) -> BoxShape3D:
 	var b := BoxShape3D.new()
 	b.size = size
 	return b
+
+
+# --------------------------------------------------------------------------
+# Ammunition
+# --------------------------------------------------------------------------
+
+func build_cartridge() -> void:
+	var S := RevolverSpec
+	var brass := mat(Color(0.85, 0.66, 0.3), 0.3, 0.9)
+	var lead := mat(Color(0.42, 0.42, 0.44), 0.55, 0.6)
+	var body := RigidBody3D.new()
+	body.name = "Cartridge"
+	body.set_script(load("res://ammo/Cartridge.gd"))
+	body.continuous_cd = true
+	body.collision_layer = 1 << 2
+	body.collision_mask = (1 << 0) | (1 << 1) | (1 << 2)
+	body.physics_material_override = physics_material(0.35, 0.35)
+	# Cartridge frame: -Z = bullet end (points down the chamber), origin = case middle.
+	var model := pivot(body, "Model", Vector3.ZERO)
+	z_cylinder(model, "Case", 0.00605, S.CASE_LENGTH, Vector3.ZERO, brass, 10)
+	z_cylinder(model, "Rim", S.CASE_RIM_RADIUS, 0.0015, Vector3(0, 0, S.CASE_LENGTH * 0.5 - 0.00075), brass, 10)
+	z_cylinder(model, "Primer", 0.0024, 0.0004, Vector3(0, 0, S.CASE_LENGTH * 0.5 + 0.0001), brass, 8)
+	var bullet_len := S.CARTRIDGE_LENGTH - S.CASE_LENGTH
+	var nose := MeshInstance3D.new()
+	var sphere := SphereMesh.new()
+	sphere.radius = S.BULLET_DIAMETER * 0.5
+	sphere.height = bullet_len * 2.0
+	sphere.radial_segments = 10
+	sphere.rings = 5
+	sphere.is_hemisphere = true
+	sphere.material = lead
+	nose.mesh = sphere
+	add(model, nose, "Bullet", Vector3(0, 0, -S.CASE_LENGTH * 0.5))
+	nose.rotation_degrees = Vector3(-90, 0, 0)
+	var cs := CollisionShape3D.new()
+	cs.shape = _cyl_shape(S.CASE_RIM_RADIUS, S.CARTRIDGE_LENGTH)
+	add(body, cs, "Shape")
+	cs.rotation_degrees = Vector3(90, 0, 0)
+	save(body, "res://ammo/Cartridge.tscn")
+
+
+## A wooden box of cartridges with an open top and a grab zone.
+func build_ammo_box() -> void:
+	var S := RevolverSpec
+	var wood := mat(Color(0.5, 0.36, 0.22))
+	var body := StaticBody3D.new()
+	body.name = "AmmoBoxBody"
+	body.set_meta(&"surface", &"wood")
+	body.collision_layer = 1
+	var w := Vector3(0.14, 0.05, 0.09)
+	var t := 0.006
+	var walls := [
+		["Bottom", Vector3(w.x, t, w.z), Vector3(0, t * 0.5, 0)],
+		["Front", Vector3(w.x, w.y, t), Vector3(0, w.y * 0.5, -w.z * 0.5 + t * 0.5)],
+		["Back", Vector3(w.x, w.y, t), Vector3(0, w.y * 0.5, w.z * 0.5 - t * 0.5)],
+		["Left", Vector3(t, w.y, w.z), Vector3(-w.x * 0.5 + t * 0.5, w.y * 0.5, 0)],
+		["Right", Vector3(t, w.y, w.z), Vector3(w.x * 0.5 - t * 0.5, w.y * 0.5, 0)],
+	]
+	for wl in walls:
+		var cs := CollisionShape3D.new()
+		cs.shape = _box_shape(wl[1])
+		add(body, cs, wl[0] + "Shape", wl[2])
+		box_mesh(body, wl[0], wl[1], wl[2], wood)
+	# Rows of cartridges standing bullet-up (one MultiMesh: one draw call).
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	var round_mesh := CylinderMesh.new()
+	round_mesh.top_radius = 0.0057
+	round_mesh.bottom_radius = 0.00605
+	round_mesh.height = S.CARTRIDGE_LENGTH
+	round_mesh.radial_segments = 8
+	round_mesh.rings = 1
+	round_mesh.material = mat(Color(0.8, 0.62, 0.3), 0.35, 0.85)
+	mm.mesh = round_mesh
+	var cols := 9
+	var rows := 6
+	mm.instance_count = cols * rows
+	for r in rows:
+		for c in cols:
+			var p := Vector3((c - (cols - 1) * 0.5) * 0.0135, t + S.CARTRIDGE_LENGTH * 0.5, (r - (rows - 1) * 0.5) * 0.0125)
+			mm.set_instance_transform(r * cols + c, Transform3D(Basis.IDENTITY, p))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	add(body, mmi, "Rounds")
+	var zone := Area3D.new()
+	zone.set_script(load("res://ammo/AmmoBox.gd"))
+	zone.collision_layer = 1 << 18  # Grab Handles
+	zone.collision_mask = 0
+	zone.monitoring = false
+	add(body, zone, "GrabZone", Vector3(0, w.y * 0.6, 0))
+	var zcs := CollisionShape3D.new()
+	zcs.shape = _box_shape(Vector3(w.x, w.y * 1.4, w.z))
+	add(zone, zcs, "Shape")
+	save(body, "res://ammo/AmmoBoxBody.tscn")
