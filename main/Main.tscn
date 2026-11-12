@@ -7,21 +7,21 @@
 [ext_resource type="PackedScene" path="res://ammo/AmmoBoxBody.tscn" id="5_7a1mn"]
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="6_m4geg"]
 
-[node name="Main" type="Node3D" unique_id=92175893]
+[node name="Main" type="Node3D" unique_id=1751836079]
 
-[node name="StartXR" parent="." unique_id=1688091533 instance=ExtResource("1_qtrhv")]
+[node name="StartXR" parent="." unique_id=786466243 instance=ExtResource("1_qtrhv")]
 
-[node name="FrameRateGuard" type="Node" parent="." unique_id=172155054 node_paths=PackedStringArray("start_xr")]
+[node name="FrameRateGuard" type="Node" parent="." unique_id=956926961 node_paths=PackedStringArray("start_xr")]
 script = ExtResource("2_o80qs")
 start_xr = NodePath("../StartXR")
 
-[node name="Range" parent="." unique_id=926974131 instance=ExtResource("3_0h8po")]
+[node name="Range" parent="." unique_id=854825521 instance=ExtResource("3_0h8po")]
 
-[node name="Revolver" parent="." unique_id=1639914665 instance=ExtResource("4_bg6xb")]
-transform = Transform3D(-7.590405e-09, -0.17364822, 0.9848077, 1, -4.371139e-08, 0, 4.304731e-08, 0.9848077, 0.17364822, -0.1, 0.935, -0.05)
+[node name="Revolver" parent="." unique_id=1924092512 instance=ExtResource("4_bg6xb")]
+transform = Transform3D(-7.590405e-09, -0.17364822, 0.9848077, 1, -4.371139e-08, 0, 4.304731e-08, 0.9848077, 0.17364822, -0.1, 0.935, 0.12)
 
-[node name="AmmoBox" parent="." unique_id=567166577 instance=ExtResource("5_7a1mn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.91, -0.05)
+[node name="AmmoBox" parent="." unique_id=1847847915 instance=ExtResource("5_7a1mn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.91, 0.12)
 
-[node name="Player" parent="." unique_id=1074281685 instance=ExtResource("6_m4geg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.55)
+[node name="Player" parent="." unique_id=2035933216 instance=ExtResource("6_m4geg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.42)

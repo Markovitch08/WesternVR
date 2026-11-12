@@ -47,6 +47,20 @@ func test_held_gun_follows_the_hand_by_forces() -> void:
 	assert_lt(gun.linear_velocity.length(), 0.1, "and stays there")
 
 
+func test_held_gun_points_45_degrees_below_the_grip_pose_forward() -> void:
+	# OpenXR's grip pose -Z runs up through the fist; a level controller held
+	# naturally must give a barrel pointing below that axis, not above it.
+	gun.global_position = Vector3(0, 1, 0)
+	hand.global_position = gun.get_grip_point().global_position
+	gun.try_grab(hand)
+	hand.global_transform = Transform3D(Basis.IDENTITY, Vector3(0, 1.2, 0))
+	gun.gravity_scale = 0.0
+	await wait_physics_frames(60)
+	var bore := gun.get_bore_direction()
+	var below := rad_to_deg(bore.angle_to(Vector3.FORWARD)) * -signf(bore.y)
+	assert_almost_eq(below, 45.0, 3.0, "barrel 45 deg below the grip pose's -Z")
+
+
 func test_held_gun_cannot_pass_through_the_bench() -> void:
 	var bench := World.floor_box(self, 0.9, &"wood", Vector3(1.4, 0.06, 0.6))
 	autofree(bench)

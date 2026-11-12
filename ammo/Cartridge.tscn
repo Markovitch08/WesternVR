@@ -52,31 +52,31 @@ is_hemisphere = true
 height = 0.0406
 radius = 0.00645
 
-[node name="Cartridge" type="RigidBody3D" unique_id=1076293596]
+[node name="Cartridge" type="RigidBody3D" unique_id=796475871]
 collision_layer = 4
 collision_mask = 7
 physics_material_override = SubResource("PhysicsMaterial_hhpol")
 continuous_cd = true
 script = ExtResource("1_7a0rs")
 
-[node name="Model" type="Node3D" parent="." unique_id=1083624682]
+[node name="Model" type="Node3D" parent="." unique_id=755975398]
 
-[node name="Case" type="MeshInstance3D" parent="Model" unique_id=1030970564]
+[node name="Case" type="MeshInstance3D" parent="Model" unique_id=1648449991]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_dgjs8")
 
-[node name="Rim" type="MeshInstance3D" parent="Model" unique_id=1268396625]
+[node name="Rim" type="MeshInstance3D" parent="Model" unique_id=48003868]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.0155)
 mesh = SubResource("CylinderMesh_072ik")
 
-[node name="Primer" type="MeshInstance3D" parent="Model" unique_id=581540821]
+[node name="Primer" type="MeshInstance3D" parent="Model" unique_id=1471832527]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.01635)
 mesh = SubResource("CylinderMesh_1pnql")
 
-[node name="Bullet" type="MeshInstance3D" parent="Model" unique_id=1522499001]
+[node name="Bullet" type="MeshInstance3D" parent="Model" unique_id=437965951]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, -0.01625)
 mesh = SubResource("SphereMesh_mjiti")
 
-[node name="Shape" type="CollisionShape3D" parent="." unique_id=17684459]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1216641498]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CylinderShape3D_lhxoo")

@@ -168,6 +168,8 @@ func build_player() -> void:
 
 	var body: Node = inst(XRT + "player/player_body.tscn")
 	add(origin, body, "PlayerBody")
+	# Slimmer than XR Tools' 0.2 m default so you can step up to the bench.
+	body.set("player_radius", 0.12)
 
 	save(origin, "res://player/Player.tscn")
 
@@ -196,15 +198,15 @@ func build_main() -> void:
 
 	# The revolver lies on the bench, right side up.
 	var gun: Node3D = inst("res://revolver/Revolver.tscn")
-	add(main, gun, "Revolver", Vector3(-0.1, 0.935, -0.05))
+	add(main, gun, "Revolver", Vector3(-0.1, 0.935, 0.12))
 	gun.rotation_degrees = Vector3(0, 80, 90)
 
 	var box: Node3D = inst("res://ammo/AmmoBoxBody.tscn")
-	add(main, box, "AmmoBox", Vector3(0.28, 0.91, -0.05))
+	add(main, box, "AmmoBox", Vector3(0.28, 0.91, 0.12))
 
 	var player: Node3D = inst("res://player/Player.tscn")
-	# Standing behind the bench, facing down-range (-Z).
-	add(main, player, "Player", Vector3(0, 0, 0.55))
+	# Standing right at the bench (front edge at z = 0.3), facing down range (-Z).
+	add(main, player, "Player", Vector3(0, 0, 0.42))
 
 	save(main, "res://main/Main.tscn")
 
@@ -374,10 +376,13 @@ func build_revolver() -> void:
 		cs.rotation_degrees = sh[3]
 
 	# Where the controller's grip pose sits when holding the gun properly.
-	# Pitch it to change how the gun sits in the hand.
+	# The OpenXR grip pose's -Z runs up through the fist (little finger to
+	# thumb), so the barrel must point ~45 deg below it, as XR Tools does for
+	# its own pickups. Raise this angle to point the gun lower, lower it to
+	# point the gun higher.
 	var gp := Marker3D.new()
 	add(body, gp, "GripPoint", S.GRIP_TOP + _grip_axis_down() * 0.045 + Vector3(0, 0, 0.004))
-	gp.rotation_degrees = Vector3(-15, 0, 0)
+	gp.rotation_degrees = Vector3(45, 0, 0)
 
 	var audio := Node.new()
 	audio.set_script(load("res://revolver/RevolverAudio.gd"))

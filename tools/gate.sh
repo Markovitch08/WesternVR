@@ -3,6 +3,7 @@
 # Exits non-zero if anything fails.
 set -e
 cd "$(dirname "$0")/.."
+mkdir -p .tmp
 tools/build.sh > .tmp/build.log 2>&1 || { cat .tmp/build.log; exit 1; }
 if grep -E "SCRIPT ERROR|Parse Error|failed to save" .tmp/build.log; then exit 1; fi
 tools/check.sh

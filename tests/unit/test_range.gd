@@ -74,8 +74,21 @@ func test_main_scene_layout_gun_rests_on_the_bench() -> void:
 	# Same placement as Main, without starting XR.
 	var gun: Revolver = load("res://revolver/Revolver.tscn").instantiate()
 	add_child_autofree(gun)
-	gun.global_position = Vector3(-0.1, 0.935, -0.05)
+	gun.global_position = Vector3(-0.1, 0.935, 0.12)
 	gun.rotation_degrees = Vector3(0, 80, 90)
 	await wait_physics_frames(120)
 	assert_between(gun.global_position.y, 0.91, 0.96, "lying on the bench top")
 	assert_lt(gun.linear_velocity.length(), 0.05, "at rest")
+
+
+func test_player_stands_at_the_bench_and_can_reach_it() -> void:
+	var text := FileAccess.get_file_as_string("res://main/Main.tscn")
+	var re := RegEx.create_from_string('\\[node name="Player"[^\\n]*\\]\\ntransform = Transform3D\\(([^)]*)\\)')
+	var m := re.search(text)
+	assert_not_null(m, "player transform in Main.tscn")
+	if m:
+		var z := float(m.get_string(1).split(",")[11])
+		var bench_front := 0.3
+		assert_between(z - bench_front, 0.05, 0.2, "player origin 5-20 cm behind the bench edge")
+	var player_text := FileAccess.get_file_as_string("res://player/Player.tscn")
+	assert_string_contains(player_text, "player_radius = 0.12", "body slim enough to reach the bench")
