@@ -12,6 +12,7 @@ func build_all() -> bool:
 	build_cartridge()
 	build_revolver()
 	build_ammo_box()
+	build_range()
 	build_player()
 	build_main()
 	return _errors == 0
@@ -535,3 +536,173 @@ func build_audio() -> void:
 			_errors += 1
 		made += 1
 	print("build_scenes: baked %d placeholder sounds" % made)
+
+
+# --------------------------------------------------------------------------
+# Test range
+# --------------------------------------------------------------------------
+
+func build_range() -> void:
+	var root := Node3D.new()
+	root.name = "Range"
+	root.set_script(load("res://range/Range.gd"))
+
+	# Sky, sun and ambient: one directional shadow, nothing else expensive.
+	var env := Environment.new()
+	var sky := Sky.new()
+	var sky_mat := ProceduralSkyMaterial.new()
+	sky_mat.sky_top_color = Color(0.32, 0.52, 0.8)
+	sky_mat.sky_horizon_color = Color(0.86, 0.8, 0.7)
+	sky_mat.ground_horizon_color = Color(0.8, 0.7, 0.55)
+	sky_mat.ground_bottom_color = Color(0.5, 0.4, 0.3)
+	sky_mat.sun_angle_max = 20.0
+	sky.sky_material = sky_mat
+	sky.radiance_size = Sky.RADIANCE_SIZE_32
+	env.background_mode = Environment.BG_SKY
+	env.sky = sky
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	env.ambient_light_energy = 0.8
+	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	var we := WorldEnvironment.new()
+	we.environment = env
+	add(root, we, "WorldEnvironment")
+	var sun := DirectionalLight3D.new()
+	sun.light_color = Color(1.0, 0.95, 0.85)
+	sun.light_energy = 1.2
+	sun.shadow_enabled = true
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+	sun.directional_shadow_max_distance = 25.0
+	add(root, sun, "Sun")
+	sun.rotation_degrees = Vector3(-52, -35, 0)
+
+	# Materials (shared).
+	var dirt_mat := mat(Color(0.78, 0.64, 0.45), 1.0)
+	var noise := NoiseTexture2D.new()
+	noise.width = 256
+	noise.height = 256
+	noise.seamless = true
+	var fnl := FastNoiseLite.new()
+	fnl.frequency = 0.03
+	noise.noise = fnl
+	noise.color_ramp = Gradient.new()
+	noise.color_ramp.set_color(0, Color(0.82, 0.8, 0.78))
+	noise.color_ramp.set_color(1, Color(1, 1, 1))
+	dirt_mat.albedo_texture = noise
+	dirt_mat.uv1_scale = Vector3(60, 60, 60)
+	var wood_mat := mat(Color(0.5, 0.35, 0.21), 0.85)
+	var old_wood := mat(Color(0.42, 0.33, 0.25), 0.9)
+	var steel_mat := mat(Color(0.55, 0.57, 0.6), 0.45, 0.85)
+	var rock_mat := mat(Color(0.6, 0.45, 0.33), 0.95)
+	var dirt_pm := physics_material(0.9, 0.05, true)
+	var wood_pm := physics_material(0.6, 0.15)
+	var steel_pm := physics_material(0.4, 0.3)
+	var rock_pm := physics_material(0.8, 0.15)
+
+	# Ground: one big flat slab.
+	var ground := StaticBody3D.new()
+	add(root, ground, "Ground")
+	ground.set_meta(&"surface", &"dirt")
+	ground.physics_material_override = dirt_pm
+	var gcs := CollisionShape3D.new()
+	gcs.shape = _box_shape(Vector3(300, 1, 300))
+	add(ground, gcs, "Collision", Vector3(0, -0.5, 0))
+	var gmi := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(300, 300)
+	plane.material = dirt_mat
+	gmi.mesh = plane
+	add(ground, gmi, "Mesh")
+
+	# Shooting bench: top 91 cm high, the player stands behind it at +Z.
+	var bench := pivot(root, "Bench", Vector3.ZERO)
+	static_box(bench, "Top", Vector3(1.4, 0.06, 0.6), Vector3(0, 0.88, 0), wood_mat, &"wood", wood_pm)
+	for lx in [-0.62, 0.62]:
+		for lz in [-0.24, 0.24]:
+			static_box(bench, "Leg_%d_%d" % [int(lx * 100), int(lz * 100)], Vector3(0.07, 0.85, 0.07),
+					Vector3(lx, 0.425, lz), wood_mat, &"wood", wood_pm)
+
+	# Wooden posts.
+	var posts := pivot(root, "Posts", Vector3.ZERO)
+	var post_spots := [Vector3(-1.2, 0, -5), Vector3(1.0, 0, -8), Vector3(-0.6, 0, -13), Vector3(1.6, 0, -20)]
+	for i in post_spots.size():
+		var ps: Vector3 = post_spots[i]
+		static_box(posts, "Post%d" % i, Vector3(0.12, 1.3, 0.12), ps + Vector3(0, 0.65, 0), old_wood, &"wood", wood_pm)
+
+	# Steel plates hanging from wooden frames; they swing when hit.
+	var plates := pivot(root, "SteelPlates", Vector3.ZERO)
+	var plate_spots := [Vector3(0.4, 0, -7), Vector3(-1.4, 0, -12), Vector3(0.9, 0, -15), Vector3(-0.3, 0, -18), Vector3(1.8, 0, -25)]
+	for i in plate_spots.size():
+		_steel_plate(plates, i, plate_spots[i], old_wood, steel_mat, wood_pm, steel_pm)
+
+	# Distance signs.
+	for d in [5, 10, 15, 20, 25]:
+		var l := Label3D.new()
+		l.text = "%d m" % d
+		l.font_size = 64
+		l.pixel_size = 0.004
+		l.modulate = Color(0.25, 0.15, 0.08)
+		l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+		add(root, l, "Sign%dm" % d, Vector3(-2.6, 0.25, -d))
+
+	# Rock wall behind the targets: stops bullets and throws back the echo.
+	var wall := pivot(root, "RockWall", Vector3(0, 0, -40))
+	var blocks := [
+		[Vector3(14, 7, 4), Vector3(-9, 3.5, 0), 6.0],
+		[Vector3(12, 9, 5), Vector3(3, 4.5, -1), -4.0],
+		[Vector3(10, 6, 4), Vector3(13, 3, 1), 12.0],
+		[Vector3(6, 4, 3), Vector3(-2, 2, 2.5), -15.0],
+	]
+	for bi in blocks.size():
+		var b: Array = blocks[bi]
+		var sb := static_box(wall, "Rock%d" % bi, b[0], b[1], rock_mat, &"rock", rock_pm)
+		sb.rotation_degrees = Vector3(0, b[2], 3.0 * (bi % 2 * 2 - 1))
+	_reflector(wall, "Echo", Vector3(0, 4, 2.5), 0.0)
+
+	# A false-front building off to the left: the second echo.
+	var bld := pivot(root, "Building", Vector3(-18, 0, -12))
+	bld.rotation_degrees = Vector3(0, 70, 0)
+	static_box(bld, "Body", Vector3(8, 4.5, 6), Vector3(0, 2.25, 0), old_wood, &"wood", wood_pm)
+	static_box(bld, "FalseFront", Vector3(8.4, 2.2, 0.2), Vector3(0, 5.6, 3.1), wood_mat, &"wood", wood_pm)
+	static_box(bld, "Porch", Vector3(8.4, 0.2, 2.2), Vector3(0, 0.1, 4.1), wood_mat, &"wood", wood_pm)
+	_reflector(bld, "Echo", Vector3(0, 3, 3.3), -3.0)
+
+	save(root, "res://range/Range.tscn")
+
+
+func _reflector(parent: Node3D, name: String, pos: Vector3, reflectivity_db: float) -> void:
+	var m := Marker3D.new()
+	add(parent, m, name, pos)
+	m.add_to_group(&"echo_reflector", true)
+	m.set_meta(&"reflectivity_db", reflectivity_db)
+
+
+func _steel_plate(parent: Node3D, i: int, at: Vector3, wood: Material, steel: Material,
+		wood_pm: PhysicsMaterial, steel_pm: PhysicsMaterial) -> void:
+	var frame := pivot(parent, "Stand%d" % i, at)
+	var span := 0.6
+	var bar_h := 1.45
+	for side in [-1, 1]:
+		static_box(frame, "Leg%s" % ("L" if side < 0 else "R"), Vector3(0.08, bar_h, 0.08),
+				Vector3(side * span * 0.5, bar_h * 0.5, 0), wood, &"wood", wood_pm)
+	var bar := static_box(frame, "Bar", Vector3(span + 0.08, 0.08, 0.08), Vector3(0, bar_h, 0), wood, &"wood", wood_pm)
+	# 10 mm AR500-style plate, 25 x 35 cm, ~6.9 kg, hung 18 cm below the bar.
+	var size := Vector3(0.25, 0.35, 0.01)
+	var plate := RigidBody3D.new()
+	add(frame, plate, "Plate%d" % i, Vector3(0, bar_h - 0.18 - size.y * 0.5, 0))
+	plate.mass = 7850.0 * size.x * size.y * size.z
+	plate.set_meta(&"surface", &"metal")
+	plate.physics_material_override = steel_pm
+	plate.collision_layer = 1 << 1  # Dynamic World
+	plate.collision_mask = (1 << 0) | (1 << 1) | (1 << 2)
+	plate.angular_damp = 0.4
+	var pcs := CollisionShape3D.new()
+	pcs.shape = _box_shape(size)
+	add(plate, pcs, "Collision")
+	box_mesh(plate, "Mesh", size, Vector3.ZERO, steel)
+	# Chains (visual) and a hinge along X at the bar.
+	box_mesh(frame, "Chains%d" % i, Vector3(0.18, 0.18, 0.006), Vector3(0, bar_h - 0.09, 0), mat(Color(0.2, 0.2, 0.2), 0.7, 0.8))
+	var hinge := HingeJoint3D.new()
+	add(frame, hinge, "Hinge%d" % i, Vector3(0, bar_h, 0))
+	hinge.rotation_degrees = Vector3(0, 90, 0) # hinge axis (joint Z) along world X
+	hinge.node_a = hinge.get_path_to(bar)
+	hinge.node_b = hinge.get_path_to(plate)
