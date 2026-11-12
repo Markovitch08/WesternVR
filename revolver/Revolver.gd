@@ -4,6 +4,16 @@ extends Grabbable
 ##
 ## The visual model is the child named "Model": the procedural placeholder, or
 ## a real .glb with the same part names (see docs/ASSETS.md).
+##
+## Default controls (hand holding the gun by its grip; change below):
+##   Trigger           pull the trigger (fires only at full cock)
+##   A / X             thumb the hammer back to full cock (two clicks)
+##   B / Y             hammer down -> half-cock; otherwise lower the hammer
+##   Thumbstick click  open / close the loading gate
+##   Thumbstick flick  turn the cylinder one chamber (half-cock, gate open)
+## Other hand, near the ejector rod head: its trigger pushes the ejector rod.
+
+signal mechanism_event(name: StringName, data: Dictionary)
 
 const PART_NAMES: Array[String] = ["Frame", "Barrel", "Cylinder", "Hammer", "Trigger",
 		"LoadingGate", "EjectorRod", "Grip", "Muzzle", "SightRear", "SightFront"]
@@ -14,16 +24,57 @@ const PART_NAMES: Array[String] = ["Frame", "Barrel", "Cylinder", "Hammer", "Tri
 ## Distance at which the sight line meets the bullet's path (m).
 @export var zero_distance := RevolverSpec.ZERO_DISTANCE
 
+@export_group("Controls")
+@export var trigger_action := "trigger"
+@export var cock_action := "ax_button"
+@export var half_cock_action := "by_button"
+@export var gate_action := "primary_click"
+@export var spin_action := "primary"
+## Action on the other hand that pushes the ejector rod.
+@export var ejector_action := "trigger"
+## The other hand must be this close to the ejector rod head (m).
+@export var ejector_reach := 0.12
+
+@export_group("Haptics")
+@export var shot_haptic := Vector2(1.0, 0.14)   # amplitude, seconds
+@export var click_haptic := Vector2(0.3, 0.025)
+
+@export_group("Load")
+## Rounds loaded at start (carried with the hammer on an empty chamber).
+@export_range(0, 6) var start_loaded := 5
+
+var mechanism: RevolverMechanism
 var model: Node3D
 var parts := {}
+
+## Animated state, in the parts' rest frames.
+var _rest := {}
+var _hammer_deg := 0.0
+var _cylinder_pos := 0.0
+var _gate_deg := 0.0
+var _ejector := 0.0     # 0..1 stroke
+var _trigger_vis := 0.0
+var _prev_buttons := {}
+var _spin_ready := true
+var _round_visuals: Array[MeshInstance3D] = []
+var _turn_provider: Node
 ## Bore direction in the gun's local frame, set so the sights are zeroed.
 var bore_direction := Vector3.FORWARD
 
 
 func _ready() -> void:
 	super._ready()
+	mechanism = RevolverMechanism.new(start_loaded)
+	mechanism.event.connect(_on_mechanism_event)
 	_find_parts()
+	for n in ["Hammer", "Trigger", "Cylinder", "LoadingGate", "EjectorRod"]:
+		if part(n):
+			_rest[n] = part(n).transform
+	_cylinder_pos = mechanism.cylinder_position()
+	_build_round_visuals()
+	_update_parts(0.0, true)
 	zero_sights()
+	released.connect(func(_g): _set_turning_enabled(true))
 
 
 func _find_parts() -> void:
@@ -70,3 +121,198 @@ func discharge() -> Dictionary:
 	var v := get_bore_direction() * muzzle_velocity + linear_velocity
 	var exclude: Array[RID] = [get_rid()]
 	return Bullets.fire(get_muzzle_position(), v, exclude)
+
+
+# --- Input ----------------------------------------------------------------------
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if grabber is HandGrabber and held_by_grip:
+		_read_gun_hand(grabber)
+	else:
+		mechanism.set_trigger(0.0)
+	_read_ejector_hand(delta)
+
+
+func _edge(g: Node, action: String) -> bool:
+	var down: bool = g.is_pressed(action)
+	var key := "%d:%s" % [g.get_instance_id(), action]
+	var was: bool = _prev_buttons.get(key, false)
+	_prev_buttons[key] = down
+	return down and not was
+
+
+func _read_gun_hand(g: Node) -> void:
+	if _edge(g, cock_action):
+		mechanism.cock()
+	if _edge(g, half_cock_action):
+		if mechanism.hammer == RevolverMechanism.Hammer.DOWN:
+			mechanism.half_cock()
+		else:
+			mechanism.lower_hammer()
+	if _edge(g, gate_action):
+		mechanism.toggle_gate()
+	var stick: Vector2 = g.get_vector2(spin_action)
+	if absf(stick.x) > 0.7 and _spin_ready:
+		_spin_ready = false
+		mechanism.spin()
+	elif absf(stick.x) < 0.3:
+		_spin_ready = true
+	mechanism.set_trigger(g.get_float(trigger_action))
+	# The thumbstick turns the cylinder while loading, not the player.
+	_set_turning_enabled(not mechanism.gate_open)
+
+
+## The other hand works the ejector rod when it is near the rod's head.
+func _read_ejector_hand(delta: float) -> void:
+	var stroke := 0.0
+	var off := _ejector_hand()
+	if off:
+		stroke = off.get_float(ejector_action)
+	if stroke >= 0.9 and _ejector < 0.9:
+		mechanism.eject()
+	_ejector = move_toward(_ejector, stroke, delta * 12.0)
+
+
+func _ejector_hand() -> Node:
+	if not grabber is HandGrabber:
+		return null
+	var other: Node3D = grabber.get_other()
+	if other == null or other.held != null:
+		return null
+	var rod := part("EjectorRod")
+	if rod == null:
+		return null
+	var head: Vector3 = rod.global_transform * Vector3(0, 0, -0.095)
+	return other if other.global_position.distance_to(head) <= ejector_reach else null
+
+
+func _set_turning_enabled(on: bool) -> void:
+	var ctrl = grabber.get("controller") if grabber else null
+	var turn: Node = ctrl.get_node_or_null("MovementTurn") if ctrl else null
+	if turn != _turn_provider and _turn_provider:
+		_turn_provider.set("enabled", true)
+	_turn_provider = turn
+	if turn:
+		turn.set("enabled", on)
+
+
+# --- Events -----------------------------------------------------------------------
+
+func _on_mechanism_event(name: StringName, data: Dictionary) -> void:
+	match name:
+		&"fired":
+			discharge()
+			_haptic(grabber, shot_haptic)
+		&"ejected", &"round_inserted", &"ejector_stroke":
+			_haptic(grabber, click_haptic * Vector2(0.7, 1.0))
+			var off := _ejector_hand()
+			if off:
+				_haptic(off, click_haptic)
+		_:
+			_haptic(grabber, click_haptic)
+	mechanism_event.emit(name, data)
+
+
+func _haptic(g: Node, amp_dur: Vector2) -> void:
+	if g and g.has_method("haptic"):
+		g.haptic(amp_dur.x, amp_dur.y)
+
+
+# --- Animation --------------------------------------------------------------------
+
+func _process(delta: float) -> void:
+	_update_parts(delta, false)
+
+
+func _update_parts(delta: float, snap: bool) -> void:
+	var S := RevolverSpec
+	var H := RevolverMechanism.Hammer
+	var hammer_target := 0.0
+	match mechanism.hammer:
+		H.HALF:
+			hammer_target = S.HAMMER_HALF_COCK_DEG
+		H.FULL:
+			hammer_target = S.HAMMER_FULL_COCK_DEG
+	# The thumb draws the hammer back in ~0.12 s; the mainspring slams it home.
+	var hammer_rate := 400.0 if hammer_target > _hammer_deg else 3000.0
+	var cyl_target := mechanism.cylinder_position()
+	if cyl_target < _cylinder_pos - 0.01:
+		cyl_target += RevolverMechanism.CHAMBERS # always turn forward (clockwise)
+	var trig_target := mechanism.trigger * (1.0 if mechanism.hammer == H.FULL else 0.25)
+	if snap:
+		_hammer_deg = hammer_target
+		_cylinder_pos = cyl_target
+	else:
+		_hammer_deg = move_toward(_hammer_deg, hammer_target, hammer_rate * delta)
+		_cylinder_pos = move_toward(_cylinder_pos, cyl_target, 9.0 * delta)
+		if _cylinder_pos >= RevolverMechanism.CHAMBERS:
+			_cylinder_pos -= RevolverMechanism.CHAMBERS
+	_gate_deg = move_toward(_gate_deg, S.GATE_OPEN_DEG if mechanism.gate_open else 0.0, 900.0 * delta) if not snap \
+			else (S.GATE_OPEN_DEG if mechanism.gate_open else 0.0)
+	_trigger_vis = trig_target
+
+	_pose(&"Hammer", Basis(Vector3.RIGHT, deg_to_rad(_hammer_deg)))
+	_pose(&"Trigger", Basis(Vector3.RIGHT, deg_to_rad(S.TRIGGER_PULL_DEG * _trigger_vis)))
+	# Clockwise seen from behind = negative rotation about +Z.
+	_pose(&"Cylinder", Basis(Vector3.BACK, -deg_to_rad(60.0 * _cylinder_pos)))
+	_pose(&"LoadingGate", Basis(Vector3.BACK, deg_to_rad(_gate_deg)))
+	if _rest.has("EjectorRod"):
+		var t: Transform3D = _rest["EjectorRod"]
+		part("EjectorRod").transform = t.translated_local(Vector3(0, 0, S.EJECTOR_STROKE * _ejector))
+	_update_round_visuals()
+
+
+func _pose(part_name: StringName, rot: Basis) -> void:
+	if _rest.has(part_name):
+		var t: Transform3D = _rest[part_name]
+		part(part_name).transform = Transform3D(t.basis * rot, t.origin)
+
+
+## Cartridge heads drawn in the back of the cylinder: brass with a primer (live),
+## a dented black primer (spent), nothing (empty).
+func _build_round_visuals() -> void:
+	var cyl := part("Cylinder")
+	if cyl == null:
+		return
+	var S := RevolverSpec
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = S.CASE_RIM_RADIUS
+	mesh.bottom_radius = S.CASE_RIM_RADIUS
+	mesh.height = 0.0015
+	mesh.radial_segments = 12
+	mesh.rings = 1
+	for i in RevolverMechanism.CHAMBERS:
+		var mi := MeshInstance3D.new()
+		mi.name = "RoundHead%d" % i
+		mi.mesh = mesh
+		var a := -deg_to_rad(60.0 * i)
+		mi.position = Vector3(sin(a), cos(a), 0) * S.CHAMBER_RADIUS + Vector3(0, 0, S.CYLINDER_LENGTH * 0.5)
+		mi.rotation_degrees = Vector3(90, 0, 0)
+		cyl.add_child(mi)
+		_round_visuals.append(mi)
+
+
+func _update_round_visuals() -> void:
+	for i in _round_visuals.size():
+		var state: int = mechanism.chambers[i]
+		var mi := _round_visuals[i]
+		mi.visible = state != RevolverMechanism.Chamber.EMPTY
+		mi.material_override = _round_material(state)
+
+
+static var _live_mat: StandardMaterial3D
+static var _spent_mat: StandardMaterial3D
+
+
+static func _round_material(state: int) -> Material:
+	if _live_mat == null:
+		_live_mat = StandardMaterial3D.new()
+		_live_mat.albedo_color = Color(0.85, 0.66, 0.3)
+		_live_mat.metallic = 0.9
+		_live_mat.roughness = 0.3
+		_spent_mat = StandardMaterial3D.new()
+		_spent_mat.albedo_color = Color(0.45, 0.36, 0.2)
+		_spent_mat.metallic = 0.7
+		_spent_mat.roughness = 0.6
+	return _spent_mat if state == RevolverMechanism.Chamber.SPENT else _live_mat

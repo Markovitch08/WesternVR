@@ -42,46 +42,46 @@ roughness = 0.8
 material = SubResource("StandardMaterial3D_4w566")
 size = Vector3(1.4, 0.06, 0.6)
 
-[node name="Main" type="Node3D" unique_id=82188957]
+[node name="Main" type="Node3D" unique_id=788213921]
 
-[node name="StartXR" parent="." unique_id=1958974494 instance=ExtResource("1_cmtxc")]
+[node name="StartXR" parent="." unique_id=601585338 instance=ExtResource("1_cmtxc")]
 
-[node name="FrameRateGuard" type="Node" parent="." unique_id=1255200440 node_paths=PackedStringArray("start_xr")]
+[node name="FrameRateGuard" type="Node" parent="." unique_id=1759689668 node_paths=PackedStringArray("start_xr")]
 script = ExtResource("2_tv7ag")
 start_xr = NodePath("../StartXR")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=222758170]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2124609528]
 environment = SubResource("Environment_0h8po")
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1231929845]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1986452850]
 transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=959870437]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=878316590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_bg6xb")
 metadata/surface = &"dirt"
 
-[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=894870768]
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=18534494]
 shape = SubResource("BoxShape3D_7a1mn")
 
-[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1001901002]
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1189256138]
 mesh = SubResource("BoxMesh_8bq6g")
 
-[node name="Bench" type="StaticBody3D" parent="." unique_id=1604907310]
+[node name="Bench" type="StaticBody3D" parent="." unique_id=1987396011]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_50616")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench" unique_id=2060607099]
+[node name="Collision" type="CollisionShape3D" parent="Bench" unique_id=1369153171]
 shape = SubResource("BoxShape3D_jjrvb")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench" unique_id=1705336777]
+[node name="Mesh" type="MeshInstance3D" parent="Bench" unique_id=390981308]
 mesh = SubResource("BoxMesh_wf831")
 
-[node name="Revolver" parent="." unique_id=99158461 instance=ExtResource("3_qtrhv")]
+[node name="Revolver" parent="." unique_id=105235132 instance=ExtResource("3_qtrhv")]
 transform = Transform3D(-7.590405e-09, -0.17364822, 0.9848077, 1, -4.371139e-08, 0, 4.304731e-08, 0.9848077, 0.17364822, -0.1, 0.935, -0.05)
 
-[node name="Player" parent="." unique_id=1365238190 instance=ExtResource("4_o80qs")]
+[node name="Player" parent="." unique_id=1080113903 instance=ExtResource("4_o80qs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.55)
