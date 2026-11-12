@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://revolver/Revolver.gd" id="1_uocf7"]
-[ext_resource type="PackedScene" path="res://revolver/RevolverPlaceholder.tscn" id="2_ppvu5"]
+[ext_resource type="PackedScene" path="res://revolver/model/colt_saa/scene.gltf" id="2_ppvu5"]
 [ext_resource type="Script" path="res://revolver/RevolverAudio.gd" id="3_17e15"]
 [ext_resource type="Script" path="res://effects/MuzzleEffects.gd" id="4_m3prt"]
 
@@ -29,7 +29,7 @@ size = Vector3(0.016, 0.032, 0.046)
 [sub_resource type="BoxShape3D" id="BoxShape3D_whd06"]
 size = Vector3(0.032, 0.11, 0.036)
 
-[node name="Revolver" type="RigidBody3D" unique_id=1924092512]
+[node name="Revolver" type="RigidBody3D" unique_id=741466515]
 collision_layer = 4
 collision_mask = 524295
 mass = 1.05
@@ -38,39 +38,63 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.018, -0.015)
 continuous_cd = true
 script = ExtResource("1_uocf7")
+part_aliases = {
+"Barrel": "ColtSAA_Barrel",
+"Cylinder": "ColtSAA_Cylinder",
+"EjectorRod": "ColtSAA_EjectRod",
+"Frame": "ColtSAA_Frame",
+"Grip": "ColtSAA_Grip",
+"Hammer": "ColtSAA_Hammer",
+"LoadingGate": "ColtSAA_LoadGate",
+"Trigger": "ColtSAA_Trigger"
+}
+hide_model_nodes = PackedStringArray("ColtSAA_Chaimber_Bullet", "ColtSAA_Chaimber_Empty", "Bullet", "Bullet Case")
+chamber_radius = 0.014097
+cylinder_length = 0.0435102
+ejector_head_offset = Vector3(0, 0, -0.0445008)
 impact_sound_prefix = "gun_land_"
 
-[node name="Model" parent="." unique_id=472861203 instance=ExtResource("2_ppvu5")]
+[node name="Model" parent="." unique_id=756650339 instance=ExtResource("2_ppvu5")]
+transform = Transform3D(-0.0762, 0, -6.6616157e-09, 0, 0.0762, 0, 6.6616157e-09, 0, -0.0762, 0.00022860001, -0.04031742, -0.00091440004)
 
-[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=1318627589]
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1729554470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.19130772)
+
+[node name="SightRear" type="Marker3D" parent="." unique_id=1002083124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.62e-05, 0.016603978, 0.0463296)
+
+[node name="SightFront" type="Marker3D" parent="." unique_id=1318848277]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016413478, -0.17449802)
+
+[node name="BarrelShape" type="CollisionShape3D" parent="." unique_id=365453543]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.09525)
 shape = SubResource("CylinderShape3D_0ebd8")
 
-[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=1401359195]
+[node name="EjectorShape" type="CollisionShape3D" parent="." unique_id=1468201892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135, -0.0135, -0.0715)
 shape = SubResource("BoxShape3D_ocb3w")
 
-[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=912205166]
+[node name="CylinderShape" type="CollisionShape3D" parent="." unique_id=1163784955]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.0135, 0.0203)
 shape = SubResource("CylinderShape3D_218qi")
 
-[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=341352761]
+[node name="FrameShape" type="CollisionShape3D" parent="." unique_id=904166926]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.058)
 shape = SubResource("BoxShape3D_ljas5")
 
-[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=1812008863]
+[node name="TriggerGuardShape" type="CollisionShape3D" parent="." unique_id=744971348]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048, 0.04)
 shape = SubResource("BoxShape3D_26a7h")
 
-[node name="GripShape" type="CollisionShape3D" parent="." unique_id=502929315]
+[node name="GripShape" type="CollisionShape3D" parent="." unique_id=1219295346]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, -0.0776314, 0.0975)
 shape = SubResource("BoxShape3D_whd06")
 
-[node name="GripPoint" type="Marker3D" parent="." unique_id=169611989]
+[node name="GripPoint" type="Marker3D" parent="." unique_id=668275381]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, -0.06897114, 0.0965)
 
-[node name="Audio" type="Node" parent="." unique_id=1954725030]
+[node name="Audio" type="Node" parent="." unique_id=1054641430]
 script = ExtResource("3_17e15")
 
-[node name="MuzzleEffects" type="Node3D" parent="." unique_id=269808896]
+[node name="MuzzleEffects" type="Node3D" parent="." unique_id=1148103818]
 script = ExtResource("4_m3prt")

@@ -8,7 +8,6 @@ const VIEWS := {
 	"right": [Vector3(0.05, 0.02, -0.06), Vector3(0.42, 0.04, -0.06)],
 	"left": [Vector3(0.0, 0.0, -0.06), Vector3(-0.42, 0.06, -0.04)],
 	"rear_loading": [Vector3(0.01, -0.01, 0.03), Vector3(0.16, 0.06, 0.22)],
-	# Eye on the sight line (rear notch -> front blade), 30 cm behind the gun.
 	"shooter": [Vector3(0, 0.0185 - 2.06 * 0.0023, -2.0), Vector3(0, 0.0185 + 0.24 * 0.0023, 0.30)],
 }
 
@@ -42,6 +41,11 @@ func _ready() -> void:
 			gun.mechanism.close_gate()
 			gun.mechanism.cock()
 		var v: Array = VIEWS[view]
+		if view == "shooter":
+			# Eye on the gun's own sight line, 30 cm behind the rear sight.
+			var r: Vector3 = gun.part("SightRear").global_position
+			var los: Vector3 = (gun.part("SightFront").global_position - r).normalized()
+			v = [r + los * 2.0, r - los * 0.3]
 		cam.global_position = v[1]
 		cam.look_at(v[0], Vector3.UP)
 		if view == "shooter":

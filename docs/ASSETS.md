@@ -1,28 +1,40 @@
 # Assets: what the real files must be
 
-Everything in the game runs on placeholders now. This page says exactly what
-real art and sound must look like so it drops in without code changes.
+The revolver uses the real "Colt Single Action Army" model by Foxx Assets
+(`revolver/model/colt_saa/`, CC-BY 4.0). Sounds, cartridges and the range are
+still placeholders. This page says what real art and sound must look like so
+it drops in without code changes.
 Licences: **CC0, or CC-BY with an entry in `CREDITS.md`.** Nothing else.
 
 ## 1. The revolver model (.glb)
 
 ### Swapping it in
-1. Put the file anywhere, e.g. `revolver/model/colt_saa.glb`.
+1. Put the file anywhere, e.g. `revolver/model/other_colt/scene.gltf`.
 2. Open `revolver/Revolver.tscn`, delete the child named `Model`, drag the
-   .glb in as a child and rename it **`Model`**.
-3. Move/rotate the `Model` node (not the parts) until the gun lines up with the
-   collision shapes (`BarrelShape`, `CylinderShape`, `FrameShape`, `GripShape`
-   ...). If the real gun differs, resize those shapes to match.
-4. Run `tools/test.bat -gselect=test_model_swap` and `-gselect=test_revolver`.
+   model in as a child and rename it **`Model`**.
+3. Scale, turn and move the `Model` node (not the parts) until the gun lines
+   up with the collision shapes (`BarrelShape`, `CylinderShape`, `FrameShape`,
+   `GripShape` ...). If the real gun differs, resize those shapes to match.
+4. On the `Revolver` node, "Model" group: fill **Part Aliases** if the model's
+   part names differ (e.g. `Hammer` -> `ColtSAA_Hammer`), list baked-in
+   cartridges under **Hide Model Nodes**, and set **Chamber Radius**,
+   **Cylinder Length** and **Ejector Head Offset** for that model.
+5. Move the `Muzzle`, `SightRear` and `SightFront` markers (children of
+   `Revolver`) onto the model's muzzle, rear-groove edges and front-blade top.
+6. Run `tools/test.bat`.
 
-The gun finds its parts **by name, anywhere under `Model`**, so the glTF
+`tools/scene_builders.gd` (`_add_colt_model`) does all of this for the Foxx
+Assets model, with the measurements in its comment; copy it for another model.
+
+The gun finds its parts **by name (or alias), anywhere under `Model`**, so the
 importer's extra nodes don't matter. Its sights are zeroed automatically from
-the `SightRear` / `SightFront` / `Muzzle` markers (the bore direction is solved
-so the bullet meets the sight line at 15 m).
+the markers (the bore direction is solved so the bullet meets the sight line
+at 15 m).
 
 ### Scale and axes
-- **Metres, real size.** 1 unit = 1 m. Overall length about 0.33 m; barrel
-  0.1905 m (7.5") from the cylinder's front face to the muzzle.
+- **Real size in the game.** Overall length about 0.33 m; barrel 0.1905 m
+  (7.5") from the cylinder's front face to the muzzle. A model in other units
+  is fine: scale the `Model` node (the Foxx Assets model is 0.0762 m/unit).
 - **Godot axes:** barrel points **-Z**, top is **+Y**, the loading-gate side
   (the gun's right) is **+X**.
 - **In Blender** (glTF export, "+Y Up" on): barrel along **Blender +Y**, top
@@ -30,10 +42,11 @@ so the bullet meets the sight line at 15 m).
 - Preferred origin: on the bore axis at the barrel breech (the cylinder's front
   face). Any origin works if you align `Model` as in step 3.
 
-### Required parts (exact names)
-Moving parts must be **separate objects whose origin is the real pivot** and
-whose local axes match the gun's axes (apply rotation in Blender). The code
-rotates/slides them from their rest pose:
+### Required parts
+Moving parts must be **separate objects whose origin is the real pivot**. Their
+local axes don't matter: the code turns them about the gun's own axes through
+that origin, from their rest pose (hammer down, gate shut, a chamber at 12
+o'clock):
 
 | Node | Pivot (origin) | Motion applied by code |
 |---|---|---|

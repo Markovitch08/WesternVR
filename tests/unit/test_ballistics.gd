@@ -49,8 +49,8 @@ func test_placeholder_revolver_sights_are_zeroed_at_15m() -> void:
 	rear = gun.part("SightRear").global_position
 	los = (gun.part("SightFront").global_position - rear).normalized()
 	assert_almost_eq(los.y, 0.0, 1e-4, "sight line is level")
-	assert_almost_eq(gun.bore_direction.angle_to(Vector3.FORWARD), 0.0, 0.001,
-			"placeholder front blade is cut for the bore to lie along -Z")
+	assert_lt(gun.bore_direction.angle_to(Vector3.FORWARD), 0.01,
+			"sights sit almost parallel to the bore: the zero tilts it a fraction of a degree")
 	var pos := gun.get_muzzle_position()
 	var vel := gun.get_bore_direction() * gun.muzzle_velocity
 	var dt := 1.0 / 720.0

@@ -2,6 +2,8 @@ extends RefCounted
 ## Scene builders used by tools/build_scenes.gd. Every size is in metres.
 
 const XRT := "res://addons/godot-xr-tools/"
+## "Colt Single Action Army" by Foxx Assets, CC-BY 4.0 (see CREDITS.md).
+const COLT_MODEL := "res://revolver/model/colt_saa/scene.gltf"
 
 var _errors := 0
 
@@ -357,8 +359,11 @@ func build_revolver() -> void:
 	body.set("surface", &"metal")
 	body.set("impact_sound_prefix", "gun_land_")
 
-	# Visual model: swap this instance for a real .glb with the same part names.
-	add(body, inst("res://revolver/RevolverPlaceholder.tscn"), "Model")
+	# Visual model: the real Colt if present, else the primitive placeholder.
+	if ResourceLoader.exists(COLT_MODEL):
+		_add_colt_model(body)
+	else:
+		add(body, inst("res://revolver/RevolverPlaceholder.tscn"), "Model")
 
 	# Compound collision from convex primitives matching the real gun.
 	var shapes := [
@@ -721,3 +726,37 @@ func _steel_plate(parent: Node3D, i: int, at: Vector3, wood: Material, steel: Ma
 	hinge.rotation_degrees = Vector3(0, 90, 0) # hinge axis (joint Z) along world X
 	hinge.node_a = hinge.get_path_to(bar)
 	hinge.node_b = hinge.get_path_to(plate)
+
+
+## Fits the Foxx Assets Colt SAA (glTF) to the gun frame. Measured from its
+## vertices (model units; 1 unit = 0.0762 m gives a 7.5" barrel and a 42 mm
+## cylinder): barrel along +Z, gate on -X, bore axis at x 0.003 y 0.529, barrel
+## breech at z -0.012, muzzle at z 2.4986, front blade top y 0.7445 at z 2.278,
+## rear-sight groove edges y 0.747 at z -0.62, cylinder axis y 0.344.
+func _add_colt_model(body: RigidBody3D) -> void:
+	var scale := 0.0762
+	var breech := Vector3(0.003, 0.5291, -0.012)  # model space
+	var to_gun := func(p: Vector3) -> Vector3:
+		var d := (p - breech) * scale
+		return Vector3(-d.x, d.y, -d.z)          # turned 180 deg about Y
+	var model := inst(COLT_MODEL) as Node3D
+	add(body, model, "Model")
+	model.transform = Transform3D(Basis(Vector3.UP, PI).scaled(Vector3.ONE * scale), to_gun.call(Vector3.ZERO))
+	body.set("part_aliases", {
+		"Frame": "ColtSAA_Frame", "Barrel": "ColtSAA_Barrel", "Cylinder": "ColtSAA_Cylinder",
+		"Hammer": "ColtSAA_Hammer", "Trigger": "ColtSAA_Trigger", "LoadingGate": "ColtSAA_LoadGate",
+		"EjectorRod": "ColtSAA_EjectRod", "Grip": "ColtSAA_Grip",
+	})
+	body.set("hide_model_nodes", PackedStringArray(["ColtSAA_Chaimber_Bullet", "ColtSAA_Chaimber_Empty", "Bullet", "Bullet Case"]))
+	body.set("chamber_radius", 0.185 * scale)
+	body.set("cylinder_length", 0.571 * scale)
+	# Ejector head at the front of the rod (model z ~1.40), relative to its pivot (z 0.816).
+	body.set("ejector_head_offset", Vector3(0, 0, -(1.40 - 0.816) * scale))
+	var markers := {
+		"Muzzle": Vector3(0.003, 0.5291, 2.4986),
+		"SightRear": Vector3(0.002, 0.747, -0.62),
+		"SightFront": Vector3(0.003, 0.7445, 2.278),
+	}
+	for n in markers:
+		var m := Marker3D.new()
+		add(body, m, n, to_gun.call(markers[n]))

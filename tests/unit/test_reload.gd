@@ -50,7 +50,7 @@ func _open_for_loading() -> void:
 
 
 func _push_ejector() -> void:
-	left.get_parent().global_position = gun.part("EjectorRod").global_transform * Vector3(0, 0, -0.095)
+	left.get_parent().global_position = gun.get_ejector_head()
 	left.simulate("trigger", 1.0)
 	await wait_physics_frames(3)
 	left.simulate("trigger", 0.0)

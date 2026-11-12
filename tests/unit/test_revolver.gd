@@ -47,7 +47,9 @@ func test_thumb_cock_then_trigger_fires_a_bullet() -> void:
 	assert_eq(gun.mechanism.hammer, H.FULL)
 	assert_eq(events.slice(0, 2), [&"half_cock", &"full_cock"] as Array[StringName], "two clicks")
 	await wait_frames(20)
-	assert_almost_eq(gun.part("Hammer").rotation_degrees.x, RevolverSpec.HAMMER_FULL_COCK_DEG, 1.0,
+	var hr := gun.part_rotation("Hammer")
+	assert_gt((hr * Vector3.UP).z, 0.5, "hammer top swung back")
+	assert_almost_eq(rad_to_deg(hr.get_rotation_quaternion().get_angle()), RevolverSpec.HAMMER_FULL_COCK_DEG, 1.0,
 			"hammer drawn back on its pivot")
 	right.simulate("trigger", 1.0)
 	await wait_physics_frames(2)
@@ -77,8 +79,7 @@ func test_loading_gate_opens_to_the_right() -> void:
 	await _press(right, "primary_click")
 	assert_true(gun.mechanism.gate_open)
 	await wait_frames(30)
-	var gate := gun.part("LoadingGate")
-	var plate_dir: Vector3 = gate.transform.basis * Vector3.UP
+	var plate_dir: Vector3 = gun.part_rotation("LoadingGate") * Vector3.UP
 	assert_gt(plate_dir.x, 0.9, "gate swung out to the right (+X)")
 
 
@@ -98,8 +99,7 @@ func test_other_hand_pushes_the_ejector_rod_to_eject() -> void:
 	gun.mechanism.chambers.fill(C.SPENT)
 	await _press(right, "by_button")     # half-cock
 	await _press(right, "primary_click") # open gate
-	var rod := gun.part("EjectorRod")
-	left.get_parent().global_position = rod.global_transform * Vector3(0, 0, -0.095)
+	left.get_parent().global_position = gun.get_ejector_head()
 	left.simulate("trigger", 1.0)
 	await wait_physics_frames(3)
 	assert_true(events.has(&"ejected"))
@@ -109,8 +109,7 @@ func test_other_hand_pushes_the_ejector_rod_to_eject() -> void:
 func test_ejector_does_nothing_with_gate_closed() -> void:
 	gun.mechanism.chambers.fill(C.SPENT)
 	await _press(right, "by_button")
-	var rod := gun.part("EjectorRod")
-	left.get_parent().global_position = rod.global_transform * Vector3(0, 0, -0.095)
+	left.get_parent().global_position = gun.get_ejector_head()
 	left.simulate("trigger", 1.0)
 	await wait_physics_frames(3)
 	assert_false(events.has(&"ejected"))

@@ -62,58 +62,58 @@ mesh = SubResource("CylinderMesh_4jg8d")
 [sub_resource type="BoxShape3D" id="BoxShape3D_uwbvb"]
 size = Vector3(0.14, 0.07, 0.09)
 
-[node name="AmmoBoxBody" type="StaticBody3D" unique_id=1847847915]
+[node name="AmmoBoxBody" type="StaticBody3D" unique_id=780869936]
 metadata/surface = &"wood"
 
-[node name="BottomShape" type="CollisionShape3D" parent="." unique_id=708974143]
+[node name="BottomShape" type="CollisionShape3D" parent="." unique_id=1349478652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
 shape = SubResource("BoxShape3D_0c1gf")
 
-[node name="Bottom" type="MeshInstance3D" parent="." unique_id=1365063297]
+[node name="Bottom" type="MeshInstance3D" parent="." unique_id=1792010019]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
 mesh = SubResource("BoxMesh_6bkdx")
 
-[node name="FrontShape" type="CollisionShape3D" parent="." unique_id=1436486253]
+[node name="FrontShape" type="CollisionShape3D" parent="." unique_id=465109133]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -0.042000003)
 shape = SubResource("BoxShape3D_86n7f")
 
-[node name="Front" type="MeshInstance3D" parent="." unique_id=2084959472]
+[node name="Front" type="MeshInstance3D" parent="." unique_id=646943569]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -0.042000003)
 mesh = SubResource("BoxMesh_e36ys")
 
-[node name="BackShape" type="CollisionShape3D" parent="." unique_id=699908135]
+[node name="BackShape" type="CollisionShape3D" parent="." unique_id=1010935563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.042000003)
 shape = SubResource("BoxShape3D_3qpy5")
 
-[node name="Back" type="MeshInstance3D" parent="." unique_id=7624247]
+[node name="Back" type="MeshInstance3D" parent="." unique_id=1541041138]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.042000003)
 mesh = SubResource("BoxMesh_3uq24")
 
-[node name="LeftShape" type="CollisionShape3D" parent="." unique_id=581692015]
+[node name="LeftShape" type="CollisionShape3D" parent="." unique_id=952907870]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.067, 0.025, 0)
 shape = SubResource("BoxShape3D_2mc1v")
 
-[node name="Left" type="MeshInstance3D" parent="." unique_id=1474434278]
+[node name="Left" type="MeshInstance3D" parent="." unique_id=663569114]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.067, 0.025, 0)
 mesh = SubResource("BoxMesh_r7tyi")
 
-[node name="RightShape" type="CollisionShape3D" parent="." unique_id=954141222]
+[node name="RightShape" type="CollisionShape3D" parent="." unique_id=679732689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.067, 0.025, 0)
 shape = SubResource("BoxShape3D_j3ddb")
 
-[node name="Right" type="MeshInstance3D" parent="." unique_id=2051550871]
+[node name="Right" type="MeshInstance3D" parent="." unique_id=985343637]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.067, 0.025, 0)
 mesh = SubResource("BoxMesh_n1ufu")
 
-[node name="Rounds" type="MultiMeshInstance3D" parent="." unique_id=1115157575]
+[node name="Rounds" type="MultiMeshInstance3D" parent="." unique_id=1156091292]
 multimesh = SubResource("MultiMesh_hanu4")
 
-[node name="GrabZone" type="Area3D" parent="." unique_id=263464250]
+[node name="GrabZone" type="Area3D" parent="." unique_id=673671990]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.030000001, 0)
 collision_layer = 262144
 collision_mask = 0
 monitoring = false
 script = ExtResource("1_33w2m")
 
-[node name="Shape" type="CollisionShape3D" parent="GrabZone" unique_id=1529886736]
+[node name="Shape" type="CollisionShape3D" parent="GrabZone" unique_id=481104466]
 shape = SubResource("BoxShape3D_uwbvb")

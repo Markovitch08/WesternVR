@@ -33,5 +33,7 @@ func test_parts_found_under_a_glb_style_hierarchy() -> void:
 	assert_almost_eq(gun.bore_direction.angle_to(Vector3.FORWARD), 0.0, 0.001, "zeroed from its sight markers")
 	gun.mechanism.cock()
 	await wait_frames(30)
-	assert_almost_eq(gun.part("Hammer").rotation_degrees.x, RevolverSpec.HAMMER_FULL_COCK_DEG, 1.0,
+	var hr := gun.part_rotation("Hammer")
+	assert_gt((hr * Vector3.UP).z, 0.5, "hammer top swung back")
+	assert_almost_eq(rad_to_deg(hr.get_rotation_quaternion().get_angle()), RevolverSpec.HAMMER_FULL_COCK_DEG, 1.0,
 			"hammer animates on the swapped model")

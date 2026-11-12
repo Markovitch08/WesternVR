@@ -57,6 +57,21 @@ const PART_NAMES: Array[String] = ["Frame", "Barrel", "Cylinder", "Hammer", "Tri
 @export var shot_haptic := Vector2(1.0, 0.14)   # amplitude, seconds
 @export var click_haptic := Vector2(0.3, 0.025)
 
+@export_group("Model")
+## Model node names for parts whose names differ from Revolver.PART_NAMES,
+## e.g. {"Hammer": "ColtSAA_Hammer"}. Unlisted parts use their own name.
+@export var part_aliases: Dictionary = {}
+## Model nodes to hide (e.g. cartridges baked into the model's cylinder; the
+## gun draws each chamber's state itself).
+@export var hide_model_nodes: PackedStringArray = []
+## Bore axis to cylinder axis (m): where the chambers sit on the cylinder.
+@export var chamber_radius := RevolverSpec.CHAMBER_RADIUS
+## Cylinder length (m): its rear face is where case heads show.
+@export var cylinder_length := RevolverSpec.CYLINDER_LENGTH
+## Ejector rod head, relative to the EjectorRod pivot, in gun axes (m). The
+## other hand works the rod from here.
+@export var ejector_head_offset := Vector3(0, 0, -0.095)
+
 @export_group("Load")
 ## Rounds loaded at start (carried with the hammer on an empty chamber).
 @export_range(0, 6) var start_loaded := 5
@@ -65,8 +80,11 @@ var mechanism: RevolverMechanism
 var model: Node3D
 var parts := {}
 
-## Animated state, in the parts' rest frames.
+## Rest transforms of the moving parts (in their parents' space).
 var _rest := {}
+## Each moving part's parent basis expressed in the gun frame, to rotate parts
+## about the gun's own axes whatever their local axes are.
+var _parent_in_gun := {}
 var _hammer_deg := 0.0
 var _cylinder_pos := 0.0
 var _gate_deg := 0.0
@@ -85,9 +103,15 @@ func _ready() -> void:
 	mechanism = RevolverMechanism.new(start_loaded)
 	mechanism.event.connect(_on_mechanism_event)
 	_find_parts()
+	var inv := global_transform.affine_inverse()
 	for n in ["Hammer", "Trigger", "Cylinder", "LoadingGate", "EjectorRod"]:
 		if part(n):
 			_rest[n] = part(n).transform
+			_parent_in_gun[n] = (inv * part(n).get_parent().global_transform).basis
+	for n in hide_model_nodes:
+		var h := model.find_child(n, true, false) as Node3D if model else null
+		if h:
+			h.visible = false
 	_cylinder_pos = mechanism.cylinder_position()
 	_build_round_visuals()
 	_update_parts(0.0, true)
@@ -101,7 +125,14 @@ func _find_parts() -> void:
 		push_error("Revolver: no child named 'Model'")
 		return
 	for n in PART_NAMES:
-		var p := model.find_child(n, true, false) as Node3D
+		# Model first (by alias, then by name), then markers placed on the gun itself.
+		var p: Node3D = null
+		if part_aliases.has(n):
+			p = model.find_child(part_aliases[n], true, false) as Node3D
+		if p == null:
+			p = model.find_child(n, true, false) as Node3D
+		if p == null:
+			p = find_child(n, true, false) as Node3D
 		if p == null:
 			push_error("Revolver: model is missing part '%s'" % n)
 		parts[n] = p
@@ -213,8 +244,15 @@ func _ejector_hand() -> Node:
 	var rod := part("EjectorRod")
 	if rod == null:
 		return null
-	var head: Vector3 = rod.global_transform * Vector3(0, 0, -0.095)
-	return other if other.global_position.distance_to(head) <= ejector_reach else null
+	return other if other.global_position.distance_to(get_ejector_head()) <= ejector_reach else null
+
+
+## World position of the ejector rod's head (where the other hand pushes it).
+func get_ejector_head() -> Vector3:
+	var rod := part("EjectorRod")
+	if rod == null:
+		return global_position
+	return rod.global_position + global_basis * ejector_head_offset
 
 
 func _set_turning_enabled(on: bool) -> void:
@@ -294,14 +332,29 @@ func _update_parts(delta: float, snap: bool) -> void:
 	_pose(&"LoadingGate", Basis(Vector3.BACK, deg_to_rad(_gate_deg)))
 	if _rest.has("EjectorRod"):
 		var t: Transform3D = _rest["EjectorRod"]
-		part("EjectorRod").transform = t.translated_local(Vector3(0, 0, S.EJECTOR_STROKE * _ejector))
+		var slide: Vector3 = (_parent_in_gun["EjectorRod"] as Basis).inverse() * Vector3(0, 0, S.EJECTOR_STROKE * _ejector)
+		part("EjectorRod").transform = Transform3D(t.basis, t.origin + slide)
 	_update_round_visuals()
 
 
+## Rotates a part about its pivot (its origin) by [param rot], given in the
+## gun's frame, so the model's own local axes don't matter.
 func _pose(part_name: StringName, rot: Basis) -> void:
 	if _rest.has(part_name):
 		var t: Transform3D = _rest[part_name]
-		part(part_name).transform = Transform3D(t.basis * rot, t.origin)
+		var pg: Basis = _parent_in_gun[part_name]
+		var rot_in_parent := pg.inverse() * rot * pg
+		part(part_name).transform = Transform3D(rot_in_parent * t.basis, t.origin)
+
+
+## A part's rotation away from its rest pose, in the gun's frame (for tests).
+func part_rotation(part_name: String) -> Basis:
+	if not _rest.has(part_name):
+		return Basis.IDENTITY
+	var pg: Basis = _parent_in_gun[part_name]
+	var now := pg * part(part_name).transform.basis
+	var rest := pg * (_rest[part_name] as Transform3D).basis
+	return (now * rest.inverse()).orthonormalized()
 
 
 ## Cartridge heads drawn in the back of the cylinder: brass with a primer (live),
@@ -317,14 +370,17 @@ func _build_round_visuals() -> void:
 	mesh.height = 0.0015
 	mesh.radial_segments = 12
 	mesh.rings = 1
+	# Placed in world space at the rest pose, so the cylinder's scale and local
+	# axes don't matter; as children they then turn with it.
+	var center: Vector3 = global_transform.affine_inverse() * cyl.global_position
 	for i in RevolverMechanism.CHAMBERS:
 		var mi := MeshInstance3D.new()
 		mi.name = "RoundHead%d" % i
 		mi.mesh = mesh
-		var a := -deg_to_rad(60.0 * i)
-		mi.position = Vector3(sin(a), cos(a), 0) * S.CHAMBER_RADIUS + Vector3(0, 0, S.CYLINDER_LENGTH * 0.5)
-		mi.rotation_degrees = Vector3(90, 0, 0)
 		cyl.add_child(mi)
+		var a := -deg_to_rad(60.0 * i)
+		var p := center + Vector3(sin(a), cos(a), 0) * chamber_radius + Vector3(0, 0, cylinder_length * 0.5)
+		mi.global_transform = global_transform * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), p)
 		_round_visuals.append(mi)
 
 
@@ -361,7 +417,7 @@ func get_gate_chamber_mouth() -> Vector3:
 	if cyl == null or not _rest.has("Cylinder"):
 		return global_position
 	var center: Vector3 = cyl.get_parent().global_transform * (_rest["Cylinder"] as Transform3D).origin
-	return center + global_basis * Vector3(RevolverSpec.CHAMBER_RADIUS, 0, RevolverSpec.CYLINDER_LENGTH * 0.5)
+	return center + global_basis * Vector3(chamber_radius, 0, cylinder_length * 0.5)
 
 
 ## A live cartridge held in the other hand slides in when brought to the open gate.

@@ -4,7 +4,9 @@ Single-player VR Western for Meta Quest, in Godot 4.7 (GDScript, Mobile
 renderer, OpenXR). **Pass 1:** one Colt Single Action Army (1873, .45 Colt,
 7.5" barrel, 1.05 kg), simulated as closely as we could, on a small test range.
 
-![Placeholder revolver](docs/images/revolver_right.png)
+![The revolver](docs/images/colt_right.png)
+
+Model: "Colt Single Action Army" by Foxx Assets, CC-BY 4.0 (see CREDITS.md).
 
 ## Run it
 - **Quest Link:** open the project in Godot 4.7, put the headset on Link,

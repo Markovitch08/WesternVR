@@ -13,8 +13,18 @@ below (title, author, link, licence, what was changed).
 
 ## Art
 
-The revolver, cartridges, ammo box and range are placeholders built from
-primitives by `tools/scene_builders.gd` (this project).
+| What | Where | Author | Licence | Source | Changes |
+|---|---|---|---|---|---|
+| "Colt Single Action Army" | `revolver/model/colt_saa/` | Foxx Assets (https://sketchfab.com/FoxxAssets) | CC-BY 4.0 | https://sketchfab.com/3d-models/colt-single-action-army-6ccdd2a5b4164e57acbaf770cc15615e | textures downscaled 4096 -> 2048 px; scaled, oriented and rigged in `tools/scene_builders.gd` |
+
+This work is based on "Colt Single Action Army"
+(https://sketchfab.com/3d-models/colt-single-action-army-6ccdd2a5b4164e57acbaf770cc15615e)
+by Foxx Assets (https://sketchfab.com/FoxxAssets) licensed under CC-BY-4.0
+(http://creativecommons.org/licenses/by/4.0/).
+
+The cartridges, ammo box and range are placeholders built from primitives by
+`tools/scene_builders.gd` (this project). The primitive revolver
+(`revolver/RevolverPlaceholder.tscn`) is used if the model is missing.
 
 ## Sound
 
