@@ -1,0 +1,83 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_5kcm4"]
+[ext_resource type="Script" path="res://player/FrameRateGuard.gd" id="2_cmtxc"]
+[ext_resource type="PackedScene" path="res://player/Player.tscn" id="3_tv7ag"]
+
+[sub_resource type="Environment" id="Environment_qtrhv"]
+background_mode = 1
+background_color = Color(0.72, 0.8, 0.9, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.8, 0.75, 0.7, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_o80qs"]
+friction = 0.9
+rough = true
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0h8po"]
+size = Vector3(40, 0.2, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bg6xb"]
+albedo_color = Color(0.76, 0.62, 0.42, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_7a1mn"]
+material = SubResource("StandardMaterial3D_bg6xb")
+size = Vector3(40, 0.2, 40)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m4geg"]
+friction = 0.6
+bounce = 0.15
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8bq6g"]
+size = Vector3(1.4, 0.06, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50616"]
+albedo_color = Color(0.45, 0.3, 0.18, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_jjrvb"]
+material = SubResource("StandardMaterial3D_50616")
+size = Vector3(1.4, 0.06, 0.6)
+
+[node name="Main" type="Node3D" unique_id=1866644310]
+
+[node name="StartXR" parent="." unique_id=455683736 instance=ExtResource("1_5kcm4")]
+
+[node name="FrameRateGuard" type="Node" parent="." unique_id=2078599839 node_paths=PackedStringArray("start_xr")]
+script = ExtResource("2_cmtxc")
+start_xr = NodePath("../StartXR")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1594890602]
+environment = SubResource("Environment_qtrhv")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1405868533]
+transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1213722117]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_o80qs")
+metadata/surface = &"dirt"
+
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=20316917]
+shape = SubResource("BoxShape3D_0h8po")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=584167098]
+mesh = SubResource("BoxMesh_7a1mn")
+
+[node name="Bench" type="StaticBody3D" parent="." unique_id=675920606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_m4geg")
+metadata/surface = &"wood"
+
+[node name="Collision" type="CollisionShape3D" parent="Bench" unique_id=889648513]
+shape = SubResource("BoxShape3D_8bq6g")
+
+[node name="Mesh" type="MeshInstance3D" parent="Bench" unique_id=1384212607]
+mesh = SubResource("BoxMesh_jjrvb")
+
+[node name="Player" parent="." unique_id=1182848899 instance=ExtResource("3_tv7ag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.55)

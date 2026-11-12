@@ -1,0 +1,8 @@
+*.gd eol=lf
+*.tscn eol=lf
+*.tres eol=lf
+*.cfg eol=lf
+*.godot eol=lf
+*.import eol=lf
+*.uid eol=lf
+*.md eol=lf

@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://player/Player.gd" id="1_x8kxw"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/hands/scenes/collision/collision_hand_left.tscn" id="2_aqcbf"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/hands/scenes/collision/collision_hand_right.tscn" id="3_gskgj"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_06mnu"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/player/player_body.tscn" id="5_mhpjh"]
+
+[node name="Player" type="XROrigin3D" unique_id=1182848899]
+script = ExtResource("1_x8kxw")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=1430686525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+near = 0.02
+far = 400.0
+
+[node name="LeftHand" type="XRController3D" parent="." unique_id=954245682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.1, -0.35)
+tracker = &"left_hand"
+pose = &"grip"
+show_when_tracked = true
+
+[node name="CollisionHand" parent="LeftHand" unique_id=1092357744 instance=ExtResource("2_aqcbf")]
+
+[node name="RightHand" type="XRController3D" parent="." unique_id=373758045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.1, -0.35)
+tracker = &"right_hand"
+pose = &"grip"
+show_when_tracked = true
+
+[node name="CollisionHand" parent="RightHand" unique_id=1350077361 instance=ExtResource("3_gskgj")]
+
+[node name="MovementTurn" parent="RightHand" unique_id=831085289 instance=ExtResource("4_06mnu")]
+turn_mode = 1
+smooth_turn_speed = 2.5
+step_turn_angle = 30.0
+
+[node name="PlayerBody" parent="." unique_id=933590353 instance=ExtResource("5_mhpjh")]
