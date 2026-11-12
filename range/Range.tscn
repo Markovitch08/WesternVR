@@ -376,13 +376,13 @@ size = Vector3(8.4, 0.2, 2.2)
 material = SubResource("StandardMaterial3D_5shlt")
 size = Vector3(8.4, 0.2, 2.2)
 
-[node name="Range" type="Node3D" unique_id=1057221970]
+[node name="Range" type="Node3D" unique_id=443555131]
 script = ExtResource("1_vyo4v")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2035714955]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=433415721]
 environment = SubResource("Environment_hepae")
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=413825982]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=213935313]
 transform = Transform3D(0.81915206, 0.45198438, -0.35312894, 0, 0.6156615, 0.7880107, 0.57357645, -0.6455006, 0.5043204, 0, 0, 0)
 light_color = Color(1, 0.95, 0.85, 1)
 light_energy = 1.2
@@ -390,171 +390,171 @@ shadow_enabled = true
 directional_shadow_mode = 0
 directional_shadow_max_distance = 25.0
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=2055339466]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=76151044]
 physics_material_override = SubResource("PhysicsMaterial_e58b0")
 metadata/surface = &"dirt"
 
-[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=755388740]
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=1631431278]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_l13ph")
 
-[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1286532368]
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1476684665]
 mesh = SubResource("PlaneMesh_vxwl4")
 
-[node name="Bench" type="Node3D" parent="." unique_id=657931219]
+[node name="Bench" type="Node3D" parent="." unique_id=330629664]
 
-[node name="Top" type="StaticBody3D" parent="Bench" unique_id=920643591]
+[node name="Top" type="StaticBody3D" parent="Bench" unique_id=829692509]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench/Top" unique_id=1741930736]
+[node name="Collision" type="CollisionShape3D" parent="Bench/Top" unique_id=290632442]
 shape = SubResource("BoxShape3D_jwrfa")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench/Top" unique_id=1263168381]
+[node name="Mesh" type="MeshInstance3D" parent="Bench/Top" unique_id=1685373878]
 mesh = SubResource("BoxMesh_unlst")
 
-[node name="Leg_-62_-24" type="StaticBody3D" parent="Bench" unique_id=1526924488]
+[node name="Leg_-62_-24" type="StaticBody3D" parent="Bench" unique_id=1444695118]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 0.425, -0.24)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_-62_-24" unique_id=446611047]
+[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_-62_-24" unique_id=1447214345]
 shape = SubResource("BoxShape3D_15pwu")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_-62_-24" unique_id=642602615]
+[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_-62_-24" unique_id=243893051]
 mesh = SubResource("BoxMesh_briub")
 
-[node name="Leg_-62_24" type="StaticBody3D" parent="Bench" unique_id=1958986883]
+[node name="Leg_-62_24" type="StaticBody3D" parent="Bench" unique_id=1066324555]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 0.425, 0.24)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_-62_24" unique_id=1998619922]
+[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_-62_24" unique_id=865011712]
 shape = SubResource("BoxShape3D_f6vpr")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_-62_24" unique_id=322259001]
+[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_-62_24" unique_id=1308728896]
 mesh = SubResource("BoxMesh_o6ty7")
 
-[node name="Leg_62_-24" type="StaticBody3D" parent="Bench" unique_id=446500038]
+[node name="Leg_62_-24" type="StaticBody3D" parent="Bench" unique_id=1075045038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.62, 0.425, -0.24)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_62_-24" unique_id=1943421112]
+[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_62_-24" unique_id=677717787]
 shape = SubResource("BoxShape3D_jsony")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_62_-24" unique_id=155477477]
+[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_62_-24" unique_id=2044424458]
 mesh = SubResource("BoxMesh_kh27b")
 
-[node name="Leg_62_24" type="StaticBody3D" parent="Bench" unique_id=1229934281]
+[node name="Leg_62_24" type="StaticBody3D" parent="Bench" unique_id=241704455]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.62, 0.425, 0.24)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_62_24" unique_id=2058470766]
+[node name="Collision" type="CollisionShape3D" parent="Bench/Leg_62_24" unique_id=1825315317]
 shape = SubResource("BoxShape3D_4px1q")
 
-[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_62_24" unique_id=510072348]
+[node name="Mesh" type="MeshInstance3D" parent="Bench/Leg_62_24" unique_id=2032903741]
 mesh = SubResource("BoxMesh_3i3k3")
 
-[node name="Posts" type="Node3D" parent="." unique_id=60494420]
+[node name="Posts" type="Node3D" parent="." unique_id=1186963596]
 
-[node name="Post0" type="StaticBody3D" parent="Posts" unique_id=1421955014]
+[node name="Post0" type="StaticBody3D" parent="Posts" unique_id=102426338]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.65, -5)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Posts/Post0" unique_id=543395810]
+[node name="Collision" type="CollisionShape3D" parent="Posts/Post0" unique_id=2086997260]
 shape = SubResource("BoxShape3D_i7auw")
 
-[node name="Mesh" type="MeshInstance3D" parent="Posts/Post0" unique_id=406325323]
+[node name="Mesh" type="MeshInstance3D" parent="Posts/Post0" unique_id=1655412155]
 mesh = SubResource("BoxMesh_uu8pt")
 
-[node name="Post1" type="StaticBody3D" parent="Posts" unique_id=1271012493]
+[node name="Post1" type="StaticBody3D" parent="Posts" unique_id=258472665]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.65, -8)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Posts/Post1" unique_id=149288862]
+[node name="Collision" type="CollisionShape3D" parent="Posts/Post1" unique_id=1229744677]
 shape = SubResource("BoxShape3D_usy52")
 
-[node name="Mesh" type="MeshInstance3D" parent="Posts/Post1" unique_id=1745544410]
+[node name="Mesh" type="MeshInstance3D" parent="Posts/Post1" unique_id=497103151]
 mesh = SubResource("BoxMesh_777mi")
 
-[node name="Post2" type="StaticBody3D" parent="Posts" unique_id=597210402]
+[node name="Post2" type="StaticBody3D" parent="Posts" unique_id=137818623]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.65, -13)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Posts/Post2" unique_id=780048863]
+[node name="Collision" type="CollisionShape3D" parent="Posts/Post2" unique_id=1403889990]
 shape = SubResource("BoxShape3D_svqer")
 
-[node name="Mesh" type="MeshInstance3D" parent="Posts/Post2" unique_id=813582225]
+[node name="Mesh" type="MeshInstance3D" parent="Posts/Post2" unique_id=1450595739]
 mesh = SubResource("BoxMesh_fuk2j")
 
-[node name="Post3" type="StaticBody3D" parent="Posts" unique_id=878745346]
+[node name="Post3" type="StaticBody3D" parent="Posts" unique_id=1086186320]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.65, -20)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Posts/Post3" unique_id=1621965989]
+[node name="Collision" type="CollisionShape3D" parent="Posts/Post3" unique_id=486358609]
 shape = SubResource("BoxShape3D_770bj")
 
-[node name="Mesh" type="MeshInstance3D" parent="Posts/Post3" unique_id=1304202453]
+[node name="Mesh" type="MeshInstance3D" parent="Posts/Post3" unique_id=1324355352]
 mesh = SubResource("BoxMesh_bsoc6")
 
-[node name="SteelPlates" type="Node3D" parent="." unique_id=1345192863]
+[node name="SteelPlates" type="Node3D" parent="." unique_id=1036543392]
 
-[node name="Stand0" type="Node3D" parent="SteelPlates" unique_id=845019780]
+[node name="Stand0" type="Node3D" parent="SteelPlates" unique_id=110781677]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, -7)
 
-[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=173109614]
+[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=2033294087]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/LegL" unique_id=1962766709]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/LegL" unique_id=1384082547]
 shape = SubResource("BoxShape3D_eupk7")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/LegL" unique_id=791184919]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/LegL" unique_id=1236594260]
 mesh = SubResource("BoxMesh_3ings")
 
-[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=1095010265]
+[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=782368796]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/LegR" unique_id=2113596498]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/LegR" unique_id=231769825]
 shape = SubResource("BoxShape3D_e3nug")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/LegR" unique_id=877666183]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/LegR" unique_id=444583436]
 mesh = SubResource("BoxMesh_agnws")
 
-[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=722462085]
+[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand0" unique_id=1149030287]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/Bar" unique_id=658677123]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/Bar" unique_id=1646985943]
 shape = SubResource("BoxShape3D_ek10r")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/Bar" unique_id=180845913]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/Bar" unique_id=1330531380]
 mesh = SubResource("BoxMesh_mbj57")
 
-[node name="Plate0" type="RigidBody3D" parent="SteelPlates/Stand0" unique_id=1583731848]
+[node name="Plate0" type="RigidBody3D" parent="SteelPlates/Stand0" unique_id=1529268366]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.095, 0)
 collision_layer = 2
 collision_mask = 7
@@ -563,61 +563,61 @@ physics_material_override = SubResource("PhysicsMaterial_sc7bd")
 angular_damp = 0.4
 metadata/surface = &"metal"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/Plate0" unique_id=1354636896]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand0/Plate0" unique_id=1357376221]
 shape = SubResource("BoxShape3D_ha7tq")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/Plate0" unique_id=1476210054]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand0/Plate0" unique_id=1880569944]
 mesh = SubResource("BoxMesh_vh7ex")
 
-[node name="Chains0" type="MeshInstance3D" parent="SteelPlates/Stand0" unique_id=1525152537]
+[node name="Chains0" type="MeshInstance3D" parent="SteelPlates/Stand0" unique_id=1430476316]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 mesh = SubResource("BoxMesh_r876p")
 
-[node name="Hinge0" type="HingeJoint3D" parent="SteelPlates/Stand0" unique_id=1473575964]
+[node name="Hinge0" type="HingeJoint3D" parent="SteelPlates/Stand0" unique_id=257499697]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.45, 0)
 node_a = NodePath("../Bar")
 node_b = NodePath("../Plate0")
 
-[node name="Stand1" type="Node3D" parent="SteelPlates" unique_id=876870971]
+[node name="Stand1" type="Node3D" parent="SteelPlates" unique_id=1915717653]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, -12)
 
-[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=870529874]
+[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=1958033876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/LegL" unique_id=967668871]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/LegL" unique_id=1743593454]
 shape = SubResource("BoxShape3D_2gxcq")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/LegL" unique_id=2034075655]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/LegL" unique_id=1216390430]
 mesh = SubResource("BoxMesh_x1jgr")
 
-[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=1748006354]
+[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=755446773]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/LegR" unique_id=1569429623]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/LegR" unique_id=1892833111]
 shape = SubResource("BoxShape3D_qn6ux")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/LegR" unique_id=2073674129]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/LegR" unique_id=421190055]
 mesh = SubResource("BoxMesh_7b5th")
 
-[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=784335896]
+[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand1" unique_id=1775393056]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/Bar" unique_id=1822821160]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/Bar" unique_id=275173742]
 shape = SubResource("BoxShape3D_saoys")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/Bar" unique_id=1829343395]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/Bar" unique_id=1841758433]
 mesh = SubResource("BoxMesh_3em70")
 
-[node name="Plate1" type="RigidBody3D" parent="SteelPlates/Stand1" unique_id=1242014059]
+[node name="Plate1" type="RigidBody3D" parent="SteelPlates/Stand1" unique_id=1196614018]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.095, 0)
 collision_layer = 2
 collision_mask = 7
@@ -626,61 +626,61 @@ physics_material_override = SubResource("PhysicsMaterial_sc7bd")
 angular_damp = 0.4
 metadata/surface = &"metal"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/Plate1" unique_id=960945389]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand1/Plate1" unique_id=1778813723]
 shape = SubResource("BoxShape3D_qxp3q")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/Plate1" unique_id=2008806077]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand1/Plate1" unique_id=575673935]
 mesh = SubResource("BoxMesh_di6xt")
 
-[node name="Chains1" type="MeshInstance3D" parent="SteelPlates/Stand1" unique_id=1866862996]
+[node name="Chains1" type="MeshInstance3D" parent="SteelPlates/Stand1" unique_id=810075601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 mesh = SubResource("BoxMesh_rmyjk")
 
-[node name="Hinge1" type="HingeJoint3D" parent="SteelPlates/Stand1" unique_id=1993167824]
+[node name="Hinge1" type="HingeJoint3D" parent="SteelPlates/Stand1" unique_id=482294480]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.45, 0)
 node_a = NodePath("../Bar")
 node_b = NodePath("../Plate1")
 
-[node name="Stand2" type="Node3D" parent="SteelPlates" unique_id=957564772]
+[node name="Stand2" type="Node3D" parent="SteelPlates" unique_id=2027013319]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, -15)
 
-[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=382375727]
+[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=952708844]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/LegL" unique_id=1579305337]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/LegL" unique_id=813266653]
 shape = SubResource("BoxShape3D_jqljm")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/LegL" unique_id=803655020]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/LegL" unique_id=2056054082]
 mesh = SubResource("BoxMesh_lddyl")
 
-[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=546176521]
+[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=571604364]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/LegR" unique_id=1654543208]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/LegR" unique_id=522151104]
 shape = SubResource("BoxShape3D_fi6ea")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/LegR" unique_id=1902804208]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/LegR" unique_id=1155701872]
 mesh = SubResource("BoxMesh_70646")
 
-[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=542650795]
+[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand2" unique_id=641112631]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/Bar" unique_id=416728267]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/Bar" unique_id=1009717786]
 shape = SubResource("BoxShape3D_hngca")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/Bar" unique_id=269092357]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/Bar" unique_id=1293670759]
 mesh = SubResource("BoxMesh_rm03t")
 
-[node name="Plate2" type="RigidBody3D" parent="SteelPlates/Stand2" unique_id=1199038863]
+[node name="Plate2" type="RigidBody3D" parent="SteelPlates/Stand2" unique_id=1987048829]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.095, 0)
 collision_layer = 2
 collision_mask = 7
@@ -689,61 +689,61 @@ physics_material_override = SubResource("PhysicsMaterial_sc7bd")
 angular_damp = 0.4
 metadata/surface = &"metal"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/Plate2" unique_id=2008634601]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand2/Plate2" unique_id=1026307214]
 shape = SubResource("BoxShape3D_rb52m")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/Plate2" unique_id=624355716]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand2/Plate2" unique_id=1670671834]
 mesh = SubResource("BoxMesh_g0s75")
 
-[node name="Chains2" type="MeshInstance3D" parent="SteelPlates/Stand2" unique_id=456588449]
+[node name="Chains2" type="MeshInstance3D" parent="SteelPlates/Stand2" unique_id=1149501956]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 mesh = SubResource("BoxMesh_f43rw")
 
-[node name="Hinge2" type="HingeJoint3D" parent="SteelPlates/Stand2" unique_id=1519312390]
+[node name="Hinge2" type="HingeJoint3D" parent="SteelPlates/Stand2" unique_id=1381867094]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.45, 0)
 node_a = NodePath("../Bar")
 node_b = NodePath("../Plate2")
 
-[node name="Stand3" type="Node3D" parent="SteelPlates" unique_id=8291465]
+[node name="Stand3" type="Node3D" parent="SteelPlates" unique_id=623977027]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, -18)
 
-[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=2095064141]
+[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=22957005]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/LegL" unique_id=963822547]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/LegL" unique_id=1647820607]
 shape = SubResource("BoxShape3D_t8o1g")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/LegL" unique_id=1326945034]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/LegL" unique_id=889001701]
 mesh = SubResource("BoxMesh_kpdav")
 
-[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=430745]
+[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=345260995]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/LegR" unique_id=378233808]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/LegR" unique_id=645985582]
 shape = SubResource("BoxShape3D_lsct5")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/LegR" unique_id=1413451524]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/LegR" unique_id=779334707]
 mesh = SubResource("BoxMesh_xw8av")
 
-[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=1277844737]
+[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand3" unique_id=552465968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/Bar" unique_id=1179662298]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/Bar" unique_id=76405863]
 shape = SubResource("BoxShape3D_awfpc")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/Bar" unique_id=1952933712]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/Bar" unique_id=263615904]
 mesh = SubResource("BoxMesh_5abap")
 
-[node name="Plate3" type="RigidBody3D" parent="SteelPlates/Stand3" unique_id=612332151]
+[node name="Plate3" type="RigidBody3D" parent="SteelPlates/Stand3" unique_id=1940463400]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.095, 0)
 collision_layer = 2
 collision_mask = 7
@@ -752,61 +752,61 @@ physics_material_override = SubResource("PhysicsMaterial_sc7bd")
 angular_damp = 0.4
 metadata/surface = &"metal"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/Plate3" unique_id=1429526450]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand3/Plate3" unique_id=1461090183]
 shape = SubResource("BoxShape3D_upauw")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/Plate3" unique_id=1690270224]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand3/Plate3" unique_id=1647639382]
 mesh = SubResource("BoxMesh_grpq3")
 
-[node name="Chains3" type="MeshInstance3D" parent="SteelPlates/Stand3" unique_id=44439656]
+[node name="Chains3" type="MeshInstance3D" parent="SteelPlates/Stand3" unique_id=1439149754]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 mesh = SubResource("BoxMesh_bkdhj")
 
-[node name="Hinge3" type="HingeJoint3D" parent="SteelPlates/Stand3" unique_id=1649380283]
+[node name="Hinge3" type="HingeJoint3D" parent="SteelPlates/Stand3" unique_id=2123147405]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.45, 0)
 node_a = NodePath("../Bar")
 node_b = NodePath("../Plate3")
 
-[node name="Stand4" type="Node3D" parent="SteelPlates" unique_id=1153487126]
+[node name="Stand4" type="Node3D" parent="SteelPlates" unique_id=2518276]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, -25)
 
-[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=1945486672]
+[node name="LegL" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=732519645]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/LegL" unique_id=1705243828]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/LegL" unique_id=946211004]
 shape = SubResource("BoxShape3D_lycn7")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/LegL" unique_id=416841387]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/LegL" unique_id=1259029882]
 mesh = SubResource("BoxMesh_s6m4h")
 
-[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=62856395]
+[node name="LegR" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=1553634181]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.725, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/LegR" unique_id=422729793]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/LegR" unique_id=1835971225]
 shape = SubResource("BoxShape3D_5pknv")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/LegR" unique_id=1554057600]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/LegR" unique_id=1497943564]
 mesh = SubResource("BoxMesh_4nmw3")
 
-[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=498473449]
+[node name="Bar" type="StaticBody3D" parent="SteelPlates/Stand4" unique_id=1795927353]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/Bar" unique_id=625771624]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/Bar" unique_id=87212888]
 shape = SubResource("BoxShape3D_ffcp0")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/Bar" unique_id=1938803982]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/Bar" unique_id=2140977025]
 mesh = SubResource("BoxMesh_7evfe")
 
-[node name="Plate4" type="RigidBody3D" parent="SteelPlates/Stand4" unique_id=892786565]
+[node name="Plate4" type="RigidBody3D" parent="SteelPlates/Stand4" unique_id=866930850]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.095, 0)
 collision_layer = 2
 collision_mask = 7
@@ -815,22 +815,22 @@ physics_material_override = SubResource("PhysicsMaterial_sc7bd")
 angular_damp = 0.4
 metadata/surface = &"metal"
 
-[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/Plate4" unique_id=456512577]
+[node name="Collision" type="CollisionShape3D" parent="SteelPlates/Stand4/Plate4" unique_id=2126510349]
 shape = SubResource("BoxShape3D_6nysh")
 
-[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/Plate4" unique_id=2097265301]
+[node name="Mesh" type="MeshInstance3D" parent="SteelPlates/Stand4/Plate4" unique_id=794407999]
 mesh = SubResource("BoxMesh_gushs")
 
-[node name="Chains4" type="MeshInstance3D" parent="SteelPlates/Stand4" unique_id=167814429]
+[node name="Chains4" type="MeshInstance3D" parent="SteelPlates/Stand4" unique_id=730631058]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 mesh = SubResource("BoxMesh_145me")
 
-[node name="Hinge4" type="HingeJoint3D" parent="SteelPlates/Stand4" unique_id=1058956771]
+[node name="Hinge4" type="HingeJoint3D" parent="SteelPlates/Stand4" unique_id=1537097610]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.45, 0)
 node_a = NodePath("../Bar")
 node_b = NodePath("../Plate4")
 
-[node name="Sign5m" type="Label3D" parent="." unique_id=810011905]
+[node name="Sign5m" type="Label3D" parent="." unique_id=357264327]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.25, -5)
 pixel_size = 0.004
 billboard = 2
@@ -838,7 +838,7 @@ modulate = Color(0.25, 0.15, 0.08, 1)
 text = "5 m"
 font_size = 64
 
-[node name="Sign10m" type="Label3D" parent="." unique_id=1906188412]
+[node name="Sign10m" type="Label3D" parent="." unique_id=1958309155]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.25, -10)
 pixel_size = 0.004
 billboard = 2
@@ -846,7 +846,7 @@ modulate = Color(0.25, 0.15, 0.08, 1)
 text = "10 m"
 font_size = 64
 
-[node name="Sign15m" type="Label3D" parent="." unique_id=54875624]
+[node name="Sign15m" type="Label3D" parent="." unique_id=1957199828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.25, -15)
 pixel_size = 0.004
 billboard = 2
@@ -854,7 +854,7 @@ modulate = Color(0.25, 0.15, 0.08, 1)
 text = "15 m"
 font_size = 64
 
-[node name="Sign20m" type="Label3D" parent="." unique_id=1606036090]
+[node name="Sign20m" type="Label3D" parent="." unique_id=1767904961]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.25, -20)
 pixel_size = 0.004
 billboard = 2
@@ -862,7 +862,7 @@ modulate = Color(0.25, 0.15, 0.08, 1)
 text = "20 m"
 font_size = 64
 
-[node name="Sign25m" type="Label3D" parent="." unique_id=949492617]
+[node name="Sign25m" type="Label3D" parent="." unique_id=968448982]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.25, -25)
 pixel_size = 0.004
 billboard = 2
@@ -870,100 +870,100 @@ modulate = Color(0.25, 0.15, 0.08, 1)
 text = "25 m"
 font_size = 64
 
-[node name="RockWall" type="Node3D" parent="." unique_id=1889546968]
+[node name="RockWall" type="Node3D" parent="." unique_id=1095801964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
 
-[node name="Rock0" type="StaticBody3D" parent="RockWall" unique_id=158371432]
+[node name="Rock0" type="StaticBody3D" parent="RockWall" unique_id=1979828445]
 transform = Transform3D(0.99315894, 0.052049257, 0.104528464, -0.05233596, 0.9986295, 0, -0.10438521, -0.0054705977, 0.9945219, -9, 3.5, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_5rw6x")
 metadata/surface = &"rock"
 
-[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock0" unique_id=710710574]
+[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock0" unique_id=1354394989]
 shape = SubResource("BoxShape3D_vywdf")
 
-[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock0" unique_id=1093491319]
+[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock0" unique_id=1869018934]
 mesh = SubResource("BoxMesh_d03fo")
 
-[node name="Rock1" type="StaticBody3D" parent="RockWall" unique_id=1033290381]
+[node name="Rock1" type="StaticBody3D" parent="RockWall" unique_id=700862103]
 transform = Transform3D(0.9961969, -0.052208472, -0.06975647, 0.05233596, 0.9986295, 0, 0.06966087, -0.0036507717, 0.9975641, 3, 4.5, -1)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_5rw6x")
 metadata/surface = &"rock"
 
-[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock1" unique_id=146123861]
+[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock1" unique_id=1872796803]
 shape = SubResource("BoxShape3D_ewa7v")
 
-[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock1" unique_id=1799804771]
+[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock1" unique_id=1003237504]
 mesh = SubResource("BoxMesh_gtyu3")
 
-[node name="Rock2" type="StaticBody3D" parent="RockWall" unique_id=1463758914]
+[node name="Rock2" type="StaticBody3D" parent="RockWall" unique_id=1502818053]
 transform = Transform3D(0.97680706, 0.051192295, 0.2079117, -0.05233596, 0.9986295, 0, -0.20762676, -0.010881258, 0.9781476, 13, 3, 1)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_5rw6x")
 metadata/surface = &"rock"
 
-[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock2" unique_id=1881308219]
+[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock2" unique_id=442010808]
 shape = SubResource("BoxShape3D_yhj16")
 
-[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock2" unique_id=1796348256]
+[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock2" unique_id=2054780136]
 mesh = SubResource("BoxMesh_xu8pw")
 
-[node name="Rock3" type="StaticBody3D" parent="RockWall" unique_id=379458528]
+[node name="Rock3" type="StaticBody3D" parent="RockWall" unique_id=97514529]
 transform = Transform3D(0.964602, -0.050552655, -0.25881904, 0.05233596, 0.9986295, 0, 0.25846434, -0.013545543, 0.9659258, -2, 2, 2.5)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_5rw6x")
 metadata/surface = &"rock"
 
-[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock3" unique_id=1452779547]
+[node name="Collision" type="CollisionShape3D" parent="RockWall/Rock3" unique_id=1691295942]
 shape = SubResource("BoxShape3D_muo3a")
 
-[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock3" unique_id=2113568565]
+[node name="Mesh" type="MeshInstance3D" parent="RockWall/Rock3" unique_id=1011624789]
 mesh = SubResource("BoxMesh_lhgiy")
 
-[node name="Echo" type="Marker3D" parent="RockWall" unique_id=1562939638 groups=["echo_reflector"]]
+[node name="Echo" type="Marker3D" parent="RockWall" unique_id=708209228 groups=["echo_reflector"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 2.5)
 metadata/reflectivity_db = 0.0
 
-[node name="Building" type="Node3D" parent="." unique_id=369557776]
+[node name="Building" type="Node3D" parent="." unique_id=799540251]
 transform = Transform3D(0.34202015, 0, 0.9396926, 0, 1, 0, -0.9396926, 0, 0.34202015, -18, 0, -12)
 
-[node name="Body" type="StaticBody3D" parent="Building" unique_id=267699016]
+[node name="Body" type="StaticBody3D" parent="Building" unique_id=1364255193]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Building/Body" unique_id=888864794]
+[node name="Collision" type="CollisionShape3D" parent="Building/Body" unique_id=621701542]
 shape = SubResource("BoxShape3D_jy13h")
 
-[node name="Mesh" type="MeshInstance3D" parent="Building/Body" unique_id=550317108]
+[node name="Mesh" type="MeshInstance3D" parent="Building/Body" unique_id=2002300734]
 mesh = SubResource("BoxMesh_pp2fd")
 
-[node name="FalseFront" type="StaticBody3D" parent="Building" unique_id=504343764]
+[node name="FalseFront" type="StaticBody3D" parent="Building" unique_id=1660335088]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.6, 3.1)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Building/FalseFront" unique_id=311749570]
+[node name="Collision" type="CollisionShape3D" parent="Building/FalseFront" unique_id=2082458675]
 shape = SubResource("BoxShape3D_fub2q")
 
-[node name="Mesh" type="MeshInstance3D" parent="Building/FalseFront" unique_id=1386212005]
+[node name="Mesh" type="MeshInstance3D" parent="Building/FalseFront" unique_id=2110095]
 mesh = SubResource("BoxMesh_hw5y8")
 
-[node name="Porch" type="StaticBody3D" parent="Building" unique_id=1638181675]
+[node name="Porch" type="StaticBody3D" parent="Building" unique_id=1549006354]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 4.1)
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_y20sl")
 metadata/surface = &"wood"
 
-[node name="Collision" type="CollisionShape3D" parent="Building/Porch" unique_id=375007378]
+[node name="Collision" type="CollisionShape3D" parent="Building/Porch" unique_id=888541655]
 shape = SubResource("BoxShape3D_aoe7u")
 
-[node name="Mesh" type="MeshInstance3D" parent="Building/Porch" unique_id=1854619257]
+[node name="Mesh" type="MeshInstance3D" parent="Building/Porch" unique_id=260332485]
 mesh = SubResource("BoxMesh_7vtvn")
 
-[node name="Echo" type="Marker3D" parent="Building" unique_id=518572723 groups=["echo_reflector"]]
+[node name="Echo" type="Marker3D" parent="Building" unique_id=103185619 groups=["echo_reflector"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 3.3)
 metadata/reflectivity_db = -3.0

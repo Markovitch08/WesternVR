@@ -243,7 +243,17 @@ func build_revolver_placeholder() -> void:
 
 	# Frame: top strap, front, bottom, recoil shield, trigger guard. Static.
 	var frame := pivot(root, "Frame", Vector3.ZERO)
-	box_mesh(frame, "TopStrap", Vector3(0.016, 0.008, 0.066), Vector3(0, 0.0145, 0.027), frame_mat)
+	# Top strap with the rear-sight groove along its top: the sight line runs
+	# over the groove's edges (SightRear) and the front blade shows in the groove.
+	var notch_depth := 0.003
+	var groove := 0.0026
+	var strap_top := S.SIGHT_REAR.y
+	var base_h := 0.008 - notch_depth
+	box_mesh(frame, "TopStrap", Vector3(0.016, base_h, 0.066), Vector3(0, strap_top - notch_depth - base_h * 0.5, 0.027), frame_mat)
+	var rail_w := (0.016 - groove) * 0.5
+	for side in [-1, 1]:
+		box_mesh(frame, "TopStrapRail%s" % ("L" if side < 0 else "R"), Vector3(rail_w, notch_depth, 0.066),
+				Vector3(side * (groove + rail_w) * 0.5, strap_top - notch_depth * 0.5, 0.027), frame_mat)
 	box_mesh(frame, "FrameFront", Vector3(0.026, 0.036, 0.012), Vector3(0, -0.011, -0.006), frame_mat)
 	box_mesh(frame, "FrameBottom", Vector3(0.022, 0.010, 0.050), Vector3(0, -0.039, 0.022), frame_mat)
 	# Recoil shield behind the cylinder, with a gap on the right for the loading gate.

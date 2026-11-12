@@ -23,7 +23,7 @@ const ZERO_DISTANCE := 15.0            # m
 
 const MUZZLE := Vector3(0, 0, -BARREL_LENGTH)
 const CYLINDER_CENTER := Vector3(0, CYLINDER_AXIS_Y, CYLINDER_LENGTH * 0.5)
-const SIGHT_REAR := Vector3(0, 0.0185, 0.060)   # bottom of the notch in the top strap
+const SIGHT_REAR := Vector3(0, 0.0185, 0.060)   # top edges of the rear-sight groove in the top strap
 const SIGHT_FRONT_Z := -0.183                    # front blade, near the muzzle
 const HAMMER_PIVOT := Vector3(0, -0.010, 0.064)
 const TRIGGER_PIVOT := Vector3(0, -0.036, 0.040)
